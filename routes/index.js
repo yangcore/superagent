@@ -4,7 +4,7 @@ var getinfo = require('../index');
 var co = require('co');
 /* GET home page. */
 router.get('/', function (req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index');
 });
 
 
