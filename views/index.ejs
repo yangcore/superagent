@@ -46,6 +46,7 @@
                         <div class="layui-input-inline">
                             <input type="text" name="priceForSaleRate" lay-verify="required" autocomplete="off" class="layui-input">
                         </div>
+                        <span class="layui-form-label">%</span>    
                     </div>
                 </div>
 
@@ -55,7 +56,6 @@
                             <div class="layui-input-inline">
                                 <input type="text" name="xyz" lay-verify="required" autocomplete="off" class="layui-input">
                             </div>
-                            <span class="layui-form-label">%</span>     
                         </div>
                     </div>
 
@@ -64,12 +64,13 @@
         <label class="layui-form-label">标的等级</label>
         <div class="layui-input-block">
           <select name="levle" >
+            <option value=""></option>
             <option value="A">A</option>
             <option value="B">B</option>
             <option value="C">C</option>
-            <option value="D" selected="">D</option>
-            <option value="A">E</option>
-            <option value="B">F</option>
+            <option value="D" selected="selected">D</option>
+            <option value="E">E</option>
+            <option value="F">F</option>
           </select>
         </div>
       </div>
