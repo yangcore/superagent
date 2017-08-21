@@ -99,18 +99,20 @@
 
             //监听提交
             form.on('submit(demo1)', function (data) {
+                var index = layer.load(0,{shade:[0.1,'#fff']});
                 $.ajax({
                     type: 'post',
                     url: '/',
                     data: data.field
                     , success: function (e) {
+                        layer.close(index);
                         if (e.code == "0000") {
-                            layer.msg(e.msg, { icon: 1 });
+                            layer.msg(e.msg, { icon: 1 ,time: 2000});
                         } else {
-                            layer.msg(e.msg, { icon: 5 });
+                            layer.msg(e.msg, { icon: 5 ,time: 2000});
                         }
                     }, error: function (e) {
-                        layer.msg("服务出现问题", { icon: 5 });
+                        layer.msg("服务出现问题", { icon: 5 ,time: 2000});
                     }
                 })
                 return false;

@@ -4,16 +4,30 @@
         "out": {  
             "type":"console"
         },  
-        "log_file" :{  
+        "log_file_warn" :{  
             "type": "file",  
-            "filename": "./logs/logs.log",  
+            "filename": "./logs/logs_warn.log",  
+            "maxLogSize": 104800,  
+            "backups": 100  
+        },
+        "log_file_suc" :{  
+            "type": "file",  
+            "filename": "./logs/logs_suc.log",  
+            "maxLogSize": 104800,  
+            "backups": 100  
+        },
+        "log_file_err" :{  
+            "type": "file",  
+            "filename": "./logs/logs_err.log",  
             "maxLogSize": 104800,  
             "backups": 100  
         }
     },  
     "categories": {
         "default": { "appenders": [ "out" ], "level": "info" },
-        "log_file": { "appenders": [ "log_file" ], "level": "ALL" }
+        "log_file_warn": { "appenders": [ "log_file_warn" ], "level": "warn" },
+        "log_file_suc": { "appenders": [ "log_file_suc" ], "level": "info" },
+        "log_file_err": { "appenders": [ "log_file_err" ], "level": "error" }
       },
 "replaceConsole": true
 }  

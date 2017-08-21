@@ -14,7 +14,11 @@ var url = {
 var log4js = require('log4js');
 var log4js_config = require("./log4.json");
 log4js.configure(log4js_config);
-var LogFile = log4js.getLogger('log_file');
+var LogFile_warn = log4js.getLogger('log_file_warn');
+var LogFile_suc = log4js.getLogger('log_file_suc');
+var LogFile_err = log4js.getLogger('log_file_err');
+
+
 // //访问登录接口获取cookie
 module.exports = function (userid, pwd, tobepaid, priceForSaleRate, xyz, levle, idJson) {
     var idJson = eval(idJson);
@@ -31,7 +35,10 @@ module.exports = function (userid, pwd, tobepaid, priceForSaleRate, xyz, levle, 
             })
             .end(function (err, res) {
                 var stu;
-                if (err) throw console.error(err + '   获取cookie接口');
+                if (err) {
+                    console.error(err + '   获取cookie接口');
+                    LogFile_err.error(err + '   获取cookie接口');
+                } 
                 var cookie = res.header["set-cookie"];
                 if (cookie.length > 3) {
                     cookie = cookie[0].split(';')[0] + ';' + cookie[1].split(';')[0] + ';' + cookie[2].split(';')[0] + ';' + cookie[3].split(';')[0] + ';' + cookie[4].split(';')[0] + ';' + cookie[5].split(';')[0] + ';';
@@ -56,7 +63,8 @@ function getData(cookie, id, tobepaid, priceForSaleRate, xyz, levle) {
         .query({ id: id })
         .end(function (err, res) {
             if (err) {
-                console.error(err + '    获取页面数据接口');;
+                console.error(err + '    获取页面数据接口');
+                LogFile_err.error(err + '    获取页面数据接口');
             };
             var $ = cheerio.load(res.text);
             var obj = {};
@@ -80,13 +88,16 @@ function getData(cookie, id, tobepaid, priceForSaleRate, xyz, levle) {
             .query({ priceForSaleRate: obj.priceForSaleRate * 1000 / 100000 })
             .query({ creditCode: obj.levle })
             .end(function (err, res) {
-                if (err) throw LogFile.error(err + '    申请债券接口');
+                if (err)  {
+                    console.error(err + '    申请债券接口');
+                    LogFile_err.error(err + '    申请债券接口');
+                }
                 if (res.body.code == 1) {
                     console.info(obj.id + "    成功申请1条债权");
-                    LogFile.info(obj.id + "    成功申请1条债权");
+                    LogFile_suc.info(obj.id + "    成功申请1条债权");
                 } else {
-                    console.info("id  " + obj.id + "    申请失败");
-                    LogFile.info("id  " + obj.id + "    申请失败");
+                    console.warn("id  " + obj.id + "    申请失败");
+                    LogFile_warn.warn("id  " + obj.id + "    申请失败");
                 }
             });
     }
