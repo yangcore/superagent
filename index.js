@@ -92,11 +92,12 @@ function getData(cookie, id, tobepaid, priceForSaleRate, xyz, levle) {
                     console.error(err + '    申请债券接口');
                     LogFile_err.error(err + '    申请债券接口');
                 }
-                if (res.body.code == 1) {
-                    console.info(obj.id + "    成功申请1条债权");
+                console.info(res.body.Code);
+                if (res.body.Code == 1) {
+                    // console.info(obj.id + "    成功申请1条债权");
                     LogFile_suc.info(obj.id + "    成功申请1条债权");
                 } else {
-                    console.warn("id  " + obj.id + "    申请失败");
+                    // console.warn("id  " + obj.id + "    申请失败");
                     LogFile_warn.warn("id  " + obj.id + "    申请失败");
                 }
             });
