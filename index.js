@@ -73,8 +73,11 @@ function getData(cookie, id, tobepaid, priceForSaleRate, xyz, levle) {
             obj.tobepaid = $('.table-hd').eq(3).prev().prev().children().eq(0).find("span").text().replace(/¥/g, '').replace(/,/g, '');//代还金额
             obj.priceForSaleRate = priceForSaleRate;
             obj.levle = levle;
+            console.info(obj.tobepaid , obj.liabilities , xyz , obj.tobepaid , tobepaid);
             if (obj.tobepaid / obj.liabilities >= xyz || obj.tobepaid >= tobepaid) {
                 singleApply(obj);
+            }else{
+                LogFile_warn.warn("id  " + obj.id + "    不符合条件");
             }
         });
 
