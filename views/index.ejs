@@ -7,11 +7,11 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="http://localhost:3000/public/layui/css/layui.css" media="all">
+    <link rel="stylesheet" href="/public/layui/css/layui.css" media="all">
 </head>
 
 <body>
-    <div style="width:430px;height:496px;position: absolute;left: -210px;margin-left: 50%;top: 10%">
+    <div>
         <form class="layui-form">
             <div class="layui-form-item">
                 <div class="layui-inline">
@@ -90,7 +90,18 @@
             </div>
         </form>
     </div>
-    <script src="http://localhost:3000/public/layui/layui.js" charset="utf-8"></script>
+
+    <div class="layui-form-item" >
+        <button  id="readinfobtn_suc" class="layui-btn">查看成功结果</button>
+        <textarea  class="layui-textarea" id="readinfo_suc"> </textarea>
+    </div>
+    <div class="layui-form-item" >
+        <button  id="readinfobtn_fail" class="layui-btn">查看失败结果</button>
+        <textarea  class="layui-textarea" id="readinfo_fail"> </textarea>
+    </div>
+    <button  id="del1" class="layui-btn">清空成功日志</button>
+    <button  id="del2" class="layui-btn">清空失败日志</button>
+    <script src="/public/layui/layui.js" charset="utf-8"></script>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script>
         layui.use(['form', 'layedit', 'laydate'], function () {
@@ -119,6 +130,52 @@
             });
         });
 
+        $('#readinfobtn_suc').click(function(){
+            getinfo('suc');
+        });
+
+        $('#readinfobtn_fail').click(function(){
+            getinfo('fail');
+        });
+
+       function getinfo(type){
+        var index = layer.load(0,{shade:[0.1,'#fff']});
+        $.ajax({
+                type: "post",
+                url: "/readInfo",
+                data:{
+                    type:type
+                },
+                success: function (response) {
+                    layer.close(index);
+                    if(type=="suc"){
+                        $('#readinfo_suc').val(response);
+                    }else if(type=="fail"){
+                        $('#readinfo_fail').val(response);
+                    }
+                }
+             });
+       }
+
+       $('#del1').click(function(){
+            dellog('suc')
+       })
+       $('#del2').click(function(){
+            dellog('fail')
+       })
+
+       function dellog(type){
+        $.ajax({
+                type: "post",
+                url: "/delnfo",
+                data:{
+                    type:type
+                },
+                success: function (response) {
+                    layer.msg(response.msg, { icon: 1 ,time: 2000});
+                }
+            });
+       }
     </script>
 
 </body>

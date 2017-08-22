@@ -23,4 +23,26 @@ router.post('/', function (req, res, next) {
   });
 
 })
+var path = require('path')
+var rf=require("fs"); 
+router.post('/readInfo',function(req, res, next){
+ if(req.body.type=="suc"){
+  var data=rf.readFileSync(path.resolve(__dirname, '..')+"/logs/logs_suc.log","utf-8");
+ }else if(req.body.type=="fail"){
+  var data=rf.readFileSync(path.resolve(__dirname, '..')+"/logs/logs_warn.log","utf-8");
+ }
+  res.send(data);
+});
+
+router.post('/delnfo',function(req, res, next){
+  if(req.body.type=="suc"){
+    rf.writeFileSync(path.resolve(__dirname, '..')+"/logs/logs_suc.log","");
+  }else if(req.body.type=="fail"){
+    rf.writeFileSync(path.resolve(__dirname, '..')+"/logs/logs_warn.log","");
+  }
+   res.send({code:"0000",msg:"删除成功"});
+ });
+
+
+
 module.exports = router;
