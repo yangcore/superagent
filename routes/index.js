@@ -28,7 +28,7 @@ router.post('/', function (req, res, next) {
         console.info(obj);
         if (obj) {
           if (obj.tobepaid / obj.liabilities >= reqbody.xyz || obj.tobepaid >= reqbody.tobepaid) {
-            var Code = yield singleApply(obj);
+            var Code = yield singleApply(obj,cookieInfo);
             console.info(obj.id + "拍拍贷返回状态码" + Code);
             if (Code == 1) {
               console.info(obj.id + "    成功申请1条债权");
@@ -80,6 +80,28 @@ router.post('/delnfo', function (req, res, next) {
   res.send({ code: "0000", msg: "删除成功" });
 });
 
-
-
+var p=[];
+router.get('/ss',function(req, res, next){
+  // p.push(req.query);
+  // console.info(p);
+  console.info(req.query);
+ 
+  function removeByValue(arr, val) {
+    for(var i=0; i<arr.length; i++) {
+      if(arr[i] == val) {
+        arr.splice(i, 1);
+        break;
+      }
+    }
+  }
+console.info(p);
+  setTimeout(()=>{
+    res.send({ code: "0000", msg: "删除成功" });
+    res.end();
+  },5000)
+console.info(p,'这里的');
+  // removeByValue(p, req.query);
+  // console.info(p);
+  console.info('完成');
+})
 module.exports = router;

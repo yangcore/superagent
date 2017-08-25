@@ -61,7 +61,7 @@ module.exports ={
             });
         })
     },
-singleApply : function (obj) {
+singleApply : function (obj,cookie) {
         return new Promise((resolve, reject) => {
         superagent.post(url.singleApply_url)
             .set("Cookie", cookie)
