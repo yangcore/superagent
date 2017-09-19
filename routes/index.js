@@ -80,28 +80,6 @@ router.post('/delnfo', function (req, res, next) {
   res.send({ code: "0000", msg: "删除成功" });
 });
 
-var p=[];
-router.get('/ss',function(req, res, next){
-  // p.push(req.query);
-  // console.info(p);
-  console.info(req.query);
- 
-  function removeByValue(arr, val) {
-    for(var i=0; i<arr.length; i++) {
-      if(arr[i] == val) {
-        arr.splice(i, 1);
-        break;
-      }
-    }
-  }
-console.info(p);
-  setTimeout(()=>{
-    res.send({ code: "0000", msg: "删除成功" });
-    res.end();
-  },5000)
-console.info(p,'这里的');
-  // removeByValue(p, req.query);
-  // console.info(p);
-  console.info('完成');
-})
+
+
 module.exports = router;

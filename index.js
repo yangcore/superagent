@@ -10,6 +10,13 @@ var url = {
     target_url: "http://invest.ppdai.com/loan/info",
     singleApply_url: "http://invest.ppdai.com/Negotiable/SingleApplyNew"
 };
+var log4js = require('log4js');
+var log4js_config = require("./log4");
+log4js.configure(log4js_config);
+var LogFile_warn = log4js.getLogger('log_file_warn');
+var LogFile_suc = log4js.getLogger('log_file_suc');
+var LogFile_err = log4js.getLogger('log_file_err');
+
 // //访问登录接口获取cookie
 module.exports ={
     getcookie:function  (userid, pwd) {
