@@ -12,111 +12,111 @@ var LogFile_suc = log4js.getLogger('log_file_suc');
 var LogFile_err = log4js.getLogger('log_file_err');
 /* GET home page. */
 router.get('/', function (req, res, next) {
-    res.render('index');
+  res.render('index');
 });
 
 
-router.post('/getCookie', function (req, res, next) {
-    var reqbody = req.body;
-    let gen1 = function* () {
-        var cookieInfo = yield getinfo(reqbody.user, reqbody.password);
-        res.send({code: '0000', msg: "获取cookie", result: {cookieInfo: cookieInfo}});
-    };
-    co(gen1).then(() => {
-        res.end();
-    });
-});
+// router.post('/getCookie', function (req, res, next) {
+//   var reqbody = req.body;
+//   let gen1 = function* () {
+//     var cookieInfo = yield getinfo(reqbody.user, reqbody.password);
+//     res.send({ code: '0000', msg: "获取cookie", result: { cookieInfo: cookieInfo } });
+//   };
+//   co(gen1).then(() => {
+//     res.end();
+//   });
+// });
 
 
 router.post('/', function (req, res, next) {
-    let gen = function* () {
-        var obj = yield getData(cookieInfo, idJson[i], reqbody.tobepaid, reqbody.priceForSaleRate, reqbody.xyz, reqbody.levle);
-        console.info(obj);
-        if (obj && obj !== "timeout" && obj !== "fail") {
-            if (obj.tobepaid / obj.liabilities >= reqbody.xyz || obj.tobepaid >= reqbody.tobepaid) {
-                var CodeObj = yield singleApply(obj, cookieInfo);
-                console.info(obj.id + "债转接口返回数据" +  CodeObj.Code + "," + CodeObj.Message);
-                if (CodeObj === "timeout") {
-                    console.warn("id  " + obj.id + "    申请超时");
-                    LogFile_warn.warn("id  " + obj.id + "    申请超时");
-                } else if (CodeObj === "fail") {
-                    console.warn("id  " + obj.id + "    申请出错，发生错误");
-                    LogFile_warn.warn("id  " + obj.id + "    申请出错，发生错误");
-                } else if (!isNaN(CodeObj.Code) || CodeObj.Code === 0) {
-                    if (CodeObj.Code === 1) {
-                        console.info(obj.id + "   拍拍贷返回状态码" + CodeObj.Code + "," + CodeObj.Message);
-                        LogFile_suc.info(obj.id + "   拍拍贷返回状态码" + CodeObj.Code + "," + CodeObj.Message);
-                    } else {
-                        console.warn("id  " + obj.id + "   拍拍贷返回状态码" + CodeObj.Code + "," + CodeObj.Message);
-                        LogFile_warn.warn("id  " + obj.id + "   拍拍贷返回状态码" + CodeObj.Code + "," + CodeObj.Message);
-                    }
-                } else {
-                    console.warn("id  " + obj.id + "   拍拍贷返回状态码" + CodeObj + ",返回数据错误");
-                    LogFile_warn.warn("id  " + obj.id + "   拍拍贷返回状态码" + CodeObj + ",返回数据错误");
-                }
-            } else {
-                console.info("id  " + obj.id + "    不符合条件或登陆失效");
-                LogFile_warn.warn("id  " + obj.id + "    不符合条件或登陆失效");
-            }
-        } else if (obj === "timeout") {
-            console.info("id  " + idJson[i].id + "    请求超时");
-            LogFile_warn.warn("id  " + idJson[i].id + "    请求超时");
-        } else if (obj === "fail") {
-            console.info("id  " + idJson[i].id + "    申请失败，发生错误");
-            LogFile_warn.warn("id  " + idJson[i].id + "    申请失败，发生错误");
+  let gen = function* () {
+    var obj = yield getData(reqbody.cookieInfo, idJson[i], reqbody.tobepaid, reqbody.priceForSaleRate, reqbody.xyz, reqbody.levle);
+    console.info(obj);
+    if (obj && obj !== "timeout" && obj !== "fail") {
+      if (obj.tobepaid / obj.liabilities >= reqbody.xyz || obj.tobepaid >= reqbody.tobepaid) {
+        var CodeObj = yield singleApply(obj, reqbody.cookieInfo);
+        console.info(obj.id + "债转接口返回数据" + CodeObj.Code + "," + CodeObj.Message);
+        if (CodeObj === "timeout") {
+          console.warn("id  " + obj.id + "    申请超时");
+          LogFile_warn.warn("id  " + obj.id + "    申请超时");
+        } else if (CodeObj === "fail") {
+          console.warn("id  " + obj.id + "    申请出错，发生错误");
+          LogFile_warn.warn("id  " + obj.id + "    申请出错，发生错误");
+        } else if (!isNaN(CodeObj.Code) || CodeObj.Code === 0) {
+          if (CodeObj.Code === 1) {
+            console.info(obj.id + "   拍拍贷返回状态码" + CodeObj.Code + "," + CodeObj.Message);
+            LogFile_suc.info(obj.id + "   拍拍贷返回状态码" + CodeObj.Code + "," + CodeObj.Message);
+          } else {
+            console.warn("id  " + obj.id + "   拍拍贷返回状态码" + CodeObj.Code + "," + CodeObj.Message);
+            LogFile_warn.warn("id  " + obj.id + "   拍拍贷返回状态码" + CodeObj.Code + "," + CodeObj.Message);
+          }
         } else {
-            console.info("id  " + idJson[i].id + "    页面无要抓取的数据");
-            LogFile_warn.warn("id  " + idJson[i].id + "    页面无要抓取的数据");
+          console.warn("id  " + obj.id + "   拍拍贷返回状态码" + CodeObj + ",返回数据错误");
+          LogFile_warn.warn("id  " + obj.id + "   拍拍贷返回状态码" + CodeObj + ",返回数据错误");
         }
-    };
-    var reqbody = req.body;
-    var idJson = eval(reqbody.idJson);
-    var cookieInfo = reqbody.cookieInfo.split('++');
-    if (cookieInfo && cookieInfo !== "timeout" && cookieInfo !== "fail") {
-        if (cookieInfo.length > 3) {
-            cookieInfo = cookieInfo[0].split(';')[0] + ';' + cookieInfo[1].split(';')[0] + ';' + cookieInfo[2].split(';')[0] + ';' + cookieInfo[3].split(';')[0] + ';' + cookieInfo[4].split(';')[0] + ';' + cookieInfo[5].split(';')[0] + ';';
-                    var i = 0;
-                    var timer = setInterval(() => {
-                        if (i === idJson.length) {
-                            clearInterval(timer);
-                            console.info("申请结束");
-                            res.send({code: '0000', msg: "申请完成,请查看logs文件夹下的日志"});
-                            res.end();
-                            return false;
-                        }
-                        co(gen);
-                        i++;
-                    }, 19000);
-        } else {
-            res.send({code: '1001', msg: "账户名或密码也许不正确"});
-            res.end();
-        }
-    } else if (cookieInfo === "timeout") {
-        res.send({code: '1001', msg: "请求超时"});
-        res.end();
-    } else if (cookieInfo === "fail") {
-        res.send({code: '1001', msg: "请求失败，发生错误"});
-        res.end();
+      } else {
+        console.info("id  " + obj.id + "    不符合条件或登陆失效");
+        LogFile_warn.warn("id  " + obj.id + "    不符合条件或登陆失效");
+      }
+    } else if (obj === "timeout") {
+      console.info("id  " + idJson[i].id + "    请求超时");
+      LogFile_warn.warn("id  " + idJson[i].id + "    请求超时");
+    } else if (obj === "fail") {
+      console.info("id  " + idJson[i].id + "    申请失败，发生错误");
+      LogFile_warn.warn("id  " + idJson[i].id + "    申请失败，发生错误");
+    } else {
+      console.info("id  " + idJson[i].id + "    页面无要抓取的数据");
+      LogFile_warn.warn("id  " + idJson[i].id + "    页面无要抓取的数据");
     }
+  };
+  var reqbody = req.body;
+  var idJson = eval(reqbody.idJson);
+//   var cookieInfo = reqbody.cookieInfo.split('++');
+//   if (cookieInfo && cookieInfo !== "timeout" && cookieInfo !== "fail") {
+//     if (cookieInfo.length > 3) {
+    //   cookieInfo = cookieInfo[0].split(';')[0] + ';' + cookieInfo[1].split(';')[0] + ';' + cookieInfo[2].split(';')[0] + ';' + cookieInfo[3].split(';')[0] + ';' + cookieInfo[4].split(';')[0] + ';' + cookieInfo[5].split(';')[0] + ';';
+      var i = 0;
+      var timer = setInterval(() => {
+        if (i === idJson.length) {
+          clearInterval(timer);
+          console.info("申请结束");
+          res.send({ code: '0000', msg: "申请完成,请查看logs文件夹下的日志" });
+          res.end();
+          return false;
+        }
+        co(gen);
+        i++;
+      }, 19000);
+    // } else {
+    //   res.send({ code: '1001', msg: "账户名或密码也许不正确" });
+    //   res.end();
+    // }
+//   } else if (cookieInfo === "timeout") {
+//     res.send({ code: '1001', msg: "请求超时" });
+//     res.end();
+//   } else if (cookieInfo === "fail") {
+//     res.send({ code: '1001', msg: "请求失败，发生错误" });
+//     res.end();
+//   }
 });
 var path = require('path');
 var rf = require("fs");
 router.post('/readInfo', function (req, res, next) {
-    if (req.body.type == "suc") {
-        var data = rf.readFileSync(path.resolve(__dirname, '..') + "/logs/logs_suc.log", "utf-8");
-    } else if (req.body.type == "fail") {
-        var data = rf.readFileSync(path.resolve(__dirname, '..') + "/logs/logs_warn.log", "utf-8");
-    }
-    res.send(data);
+  if (req.body.type == "suc") {
+    var data = rf.readFileSync(path.resolve(__dirname, '..') + "/logs/logs_suc.log", "utf-8");
+  } else if (req.body.type == "fail") {
+    var data = rf.readFileSync(path.resolve(__dirname, '..') + "/logs/logs_warn.log", "utf-8");
+  }
+  res.send(data);
 });
 
 router.post('/delnfo', function (req, res, next) {
-    if (req.body.type == "suc") {
-        rf.writeFileSync(path.resolve(__dirname, '..') + "/logs/logs_suc.log", "");
-    } else if (req.body.type == "fail") {
-        rf.writeFileSync(path.resolve(__dirname, '..') + "/logs/logs_warn.log", "");
-    }
-    res.send({code: "0000", msg: "删除成功"});
+  if (req.body.type == "suc") {
+    rf.writeFileSync(path.resolve(__dirname, '..') + "/logs/logs_suc.log", "");
+  } else if (req.body.type == "fail") {
+    rf.writeFileSync(path.resolve(__dirname, '..') + "/logs/logs_warn.log", "");
+  }
+  res.send({ code: "0000", msg: "删除成功" });
 });
 
 
