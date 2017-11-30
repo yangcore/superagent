@@ -24,7 +24,7 @@ module.exports ={
             superagent.post(url.login_url)
                 .timeout({
                     response: 5000,
-                    deadline: 10000,
+                    deadline: 6000,
                 })
                 .type("form")
                 .set(browserMsg)
@@ -59,7 +59,7 @@ module.exports ={
         superagent.get(url.target_url)
             .timeout({
                 response: 5000,
-                deadline: 10000,
+                deadline: 6000,
             })
             .set("Cookie", cookie)
             .set(browserMsg)
@@ -98,7 +98,7 @@ singleApply : function (obj,cookie) {
         superagent.post(url.singleApply_url)
             .timeout({
                 response: 5000,
-                deadline: 10000,
+                deadline: 6000,
             })
             .set("Cookie", cookie)
             .set(browserMsg)

@@ -1,4 +1,4 @@
-var express = require('express');
+﻿var express = require('express');
 var router = express.Router();
 var getinfo = require('../index').getcookie;
 var getData = require('../index').getData;
@@ -86,7 +86,7 @@ router.post('/', function (req, res, next) {
                         }
                         co(gen);
                         i++;
-                    }, 1200);
+                    }, 19000);
         } else {
             res.send({code: '1001', msg: "账户名或密码也许不正确"});
             res.end();

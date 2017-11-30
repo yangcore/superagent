@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 
 <head>
@@ -51,7 +51,8 @@
                         说明：<br>
                         1 由于拍拍贷登陆接口有次数限制，可能出现验证码情况，所以只能尝试登陆多次，但一旦登陆成功，只要页面不关闭，登陆就不会失效；<br/>
                         2 拍拍贷登陆是有有效期的（页面打开，但不做任何操作下，长时间会失效，具体多久会失效不清楚），若发现申请债转提示全部变为”不符合条件或登陆失效“时，请检查该标的符合筛选条件不，或该标的是此账户标的不，若都符合，可能登陆失效，可以尝试关闭浏览器，重新打开，登陆；<br>
-                        3 现限制每3s发送一条标的申请,以保持运行稳定；若申请标的多的时候，请耐心等待；<br>
+
+                        3 由于只计算了发送时间，没有计算响应时间，造成发送完成，但是无响应，页面可以继续操作，但是标的申请还在继续的假象，所以现在把 <span style="color:blue">每一个标的的申请时间从发送到响应最大间隔时间改为19秒一个(包含三个请求，每个最长6秒，共18秒，加1秒缓冲时间)，若超过无响应择视为请求超时；所以申请标的时，请耐心等待。</span><br>
                         4 右侧可直接转换标的，建议不要一次性转换过多标的，过多若电脑性能不行，可能会造成页面卡死；<br>
                         5 不要使用ie浏览器，可以使用谷歌或其他浏览器，因为标的id转换不支持ie内核的浏览器；
                     </div>
@@ -161,7 +162,7 @@
                     输出 JSON
                     <div class="setting" style="display: none">
                         <label><input type="checkbox" id="addField" checked="checked"> 首行字段</label>
-                        <label><input type="checkbox" id="addIndex" > 首列索引</label>
+                        <label><input type="checkbox" id="addIndex"> 首列索引</label>
                         <label title="仅作用于单行或单列数据"><input type="checkbox" id="simplify"> 简化数据</label>
                         <label><input type="checkbox" id="nl2br"> 保留换行</label>
                         <label><input type="checkbox" id="compaction" checked="checked"> 代码压缩</label>
