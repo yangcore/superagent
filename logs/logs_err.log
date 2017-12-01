@@ -3194,3 +3194,59 @@
 [2017-11-30 13:51:29.206] [ERROR] log_file_err - Error: Bad Gateway    获取页面数据接口
 [2017-11-30 13:59:05.243] [ERROR] log_file_err - Error: Bad Gateway    获取页面数据接口
 [2017-11-30 14:43:25.445] [ERROR] log_file_err - Error: Bad Gateway    获取页面数据接口
+[2017-12-01T11:48:00.647] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T11:48:00.666] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T11:48:34.612] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T11:48:34.711] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T11:50:03.441] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T11:50:05.900] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T11:51:33.455] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T11:51:33.484] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T11:53:00.533] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T11:53:00.551] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T12:16:04.374] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T12:16:04.436] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T12:17:54.893] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T12:17:55.903] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T12:18:48.284] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T12:18:48.316] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T12:19:18.919] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T12:19:19.019] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T12:22:48.391] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T12:22:48.433] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T12:23:43.852] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T12:23:44.468] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T12:23:57.640] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T12:23:57.745] [ERROR] log_file_err - TypeError: Cannot set property 'id' of undefined    获取页面数据接口
+[2017-12-01T12:27:22.080] [ERROR] log_file_err - TypeError: Cannot set property 'liabilities' of undefined    获取页面数据接口
+[2017-12-01T12:27:22.135] [ERROR] log_file_err - TypeError: Cannot set property 'liabilities' of undefined    获取页面数据接口
+[2017-12-01T12:51:21.913] [ERROR] log_file_err - Error: Bad Request    申请债券接口
+[2017-12-01T12:51:21.921] [ERROR] log_file_err - Error: Bad Request    申请债券接口
+[2017-12-01T12:53:53.336] [ERROR] log_file_err - Error: Bad Request    申请债券接口
+[2017-12-01T12:53:53.366] [ERROR] log_file_err - Error: Bad Request    申请债券接口
+[2017-12-01T13:18:03.516] [ERROR] log_file_err - Error: Bad Request    申请债券接口
+[2017-12-01T13:18:03.538] [ERROR] log_file_err - Error: Bad Request    申请债券接口
+[2017-12-01T13:22:18.034] [ERROR] log_file_err - Error: Bad Request    申请债券接口
+[2017-12-01T13:22:18.049] [ERROR] log_file_err - Error: Bad Request    申请债券接口
+[2017-12-01T13:24:15.561] [ERROR] log_file_err - undefinedError: Bad Request    申请债券接口
+[2017-12-01T13:24:15.584] [ERROR] log_file_err - undefinedError: Bad Request    申请债券接口
+[2017-12-01T13:40:13.171] [ERROR] log_file_err - undefinedError: Bad Request    申请债券接口
+[2017-12-01T13:40:13.191] [ERROR] log_file_err - undefinedError: Bad Request    申请债券接口
+[2017-12-01T13:40:27.731] [ERROR] log_file_err - undefinedError: Bad Request    申请债券接口
+[2017-12-01T13:40:27.766] [ERROR] log_file_err - undefinedError: Bad Request    申请债券接口
+[2017-12-01T13:41:33.835] [ERROR] log_file_err - undefinedError: Bad Request    申请债券接口
+[2017-12-01T13:41:33.861] [ERROR] log_file_err - undefinedError: Bad Request    申请债券接口
+[2017-12-01T13:42:09.053] [ERROR] log_file_err - undefinedError: Bad Request    申请债券接口
+[2017-12-01T13:42:09.069] [ERROR] log_file_err - undefinedError: Bad Request    申请债券接口
+[2017-12-01T13:43:08.800] [ERROR] log_file_err - undefinedError: Bad Request    申请债券接口
+[2017-12-01T13:43:08.819] [ERROR] log_file_err - undefinedError: Bad Request    申请债券接口
+[2017-12-01T13:43:11.056] [ERROR] log_file_err - undefinedError: Bad Request    申请债券接口
+[2017-12-01T13:43:11.070] [ERROR] log_file_err - undefinedError: Bad Request    申请债券接口
+[2017-12-01T13:43:13.274] [ERROR] log_file_err - undefinedError: Bad Request    申请债券接口
+[2017-12-01T13:43:13.306] [ERROR] log_file_err - undefinedError: Bad Request    申请债券接口
+[2017-12-01T13:44:08.174] [ERROR] log_file_err - undefinedError: Bad Request    申请债券接口
+[2017-12-01T13:44:08.904] [ERROR] log_file_err - undefinedError: Bad Request    申请债券接口
+[2017-12-01T13:50:08.919] [ERROR] log_file_err - 66097753ReferenceError: resultObj is not defined    申请债券接口
+[2017-12-01T13:51:51.037] [ERROR] log_file_err - 66097984ReferenceError: resultObj is not defined    申请债券接口
+[2017-12-01T14:06:54.291] [ERROR] log_file_err - 66097984ReferenceError: id is not defined    申请债券接口
+[2017-12-01T14:06:54.363] [ERROR] log_file_err - 66097753ReferenceError: id is not defined    申请债券接口

@@ -1,111 +1,59 @@
-﻿var express = require('express');
-var router = express.Router();
-var getinfo = require('../index').getcookie;
-var getData = require('../index').getData;
-var singleApply = require('../index').singleApply;
-var co = require('co');
-var log4js = require('log4js');
-var log4js_config = require("../log4");
+﻿const express = require('express');
+const router = express.Router();
+const getData = require('../index').getData;
+const singleApply = require('../index').singleApply;
+const log4js = require('log4js');
+const log4js_config = require("../log4");
+const LogFile_warn = log4js.getLogger('log_file_warn');
+const LogFile_suc = log4js.getLogger('log_file_suc');
+const LogFile_err = log4js.getLogger('log_file_err');
+const path = require('path');
+const rf = require("fs");
+const async = require('async'); //异步抓取 
+const trimSpace = function (array) {
+  for (let i = 0; i < array.length; i++) {
+    if (!array[i]) {
+      array.splice(i, 1);
+      i = i - 1;
+    }
+  }
+  return array;
+};
+
 log4js.configure(log4js_config);
-var LogFile_warn = log4js.getLogger('log_file_warn');
-var LogFile_suc = log4js.getLogger('log_file_suc');
-var LogFile_err = log4js.getLogger('log_file_err');
-/* GET home page. */
+
 router.get('/', function (req, res, next) {
   res.render('index');
 });
 
-
-// router.post('/getCookie', function (req, res, next) {
-//   var reqbody = req.body;
-//   let gen1 = function* () {
-//     var cookieInfo = yield getinfo(reqbody.user, reqbody.password);
-//     res.send({ code: '0000', msg: "获取cookie", result: { cookieInfo: cookieInfo } });
-//   };
-//   co(gen1).then(() => {
-//     res.end();
-//   });
-// });
-
-
 router.post('/', function (req, res, next) {
-  let gen = function* () {
-    var obj = yield getData(reqbody.cookieInfo, idJson[i], reqbody.tobepaid, reqbody.priceForSaleRate, reqbody.xyz, reqbody.levle);
-    console.info(obj);
-    if (obj && obj !== "timeout" && obj !== "fail") {
-      if (obj.tobepaid / obj.liabilities >= reqbody.xyz || obj.tobepaid >= reqbody.tobepaid) {
-        var CodeObj = yield singleApply(obj, reqbody.cookieInfo);
-        console.info(obj.id + "债转接口返回数据" + CodeObj.Code + "," + CodeObj.Message);
-        if (CodeObj === "timeout") {
-          console.warn("id  " + obj.id + "    申请超时");
-          LogFile_warn.warn("id  " + obj.id + "    申请超时");
-        } else if (CodeObj === "fail") {
-          console.warn("id  " + obj.id + "    申请出错，发生错误");
-          LogFile_warn.warn("id  " + obj.id + "    申请出错，发生错误");
-        } else if (!isNaN(CodeObj.Code) || CodeObj.Code === 0) {
-          if (CodeObj.Code === 1) {
-            console.info(obj.id + "   拍拍贷返回状态码" + CodeObj.Code + "," + CodeObj.Message);
-            LogFile_suc.info(obj.id + "   拍拍贷返回状态码" + CodeObj.Code + "," + CodeObj.Message);
-          } else {
-            console.warn("id  " + obj.id + "   拍拍贷返回状态码" + CodeObj.Code + "," + CodeObj.Message);
-            LogFile_warn.warn("id  " + obj.id + "   拍拍贷返回状态码" + CodeObj.Code + "," + CodeObj.Message);
-          }
+  let reqbody = req.body,
+    idJson = eval(reqbody.idJson);
+  async.mapLimit(idJson, 5, (idObj, callback) => {
+    getData(reqbody.cookieInfo, idObj, reqbody.tobepaid, reqbody.priceForSaleRate, reqbody.xyz, reqbody.levle, callback)
+  }, (err, obj) => {
+    async.mapLimit(trimSpace(obj), 5, (resultObj, callback) => {
+      if (resultObj) {
+        if (resultObj.tobepaid / resultObj.liabilities >= reqbody.xyz || resultObj.tobepaid >= reqbody.tobepaid) {
+          singleApply(resultObj, reqbody.cookieInfo, callback)
         } else {
-          console.warn("id  " + obj.id + "   拍拍贷返回状态码" + CodeObj + ",返回数据错误");
-          LogFile_warn.warn("id  " + obj.id + "   拍拍贷返回状态码" + CodeObj + ",返回数据错误");
+          console.warn("id  " + resultObj.id + "    不符合条件");
+          LogFile_warn.warn("id  " + resultObj.id + "    不符合条件");
         }
-      } else {
-        console.info("id  " + obj.id + "    不符合条件或登陆失效");
-        LogFile_warn.warn("id  " + obj.id + "    不符合条件或登陆失效");
       }
-    } else if (obj === "timeout") {
-      console.info("id  " + idJson[i].id + "    请求超时");
-      LogFile_warn.warn("id  " + idJson[i].id + "    请求超时");
-    } else if (obj === "fail") {
-      console.info("id  " + idJson[i].id + "    申请失败，发生错误");
-      LogFile_warn.warn("id  " + idJson[i].id + "    申请失败，发生错误");
-    } else {
-      console.info("id  " + idJson[i].id + "    页面无要抓取的数据");
-      LogFile_warn.warn("id  " + idJson[i].id + "    页面无要抓取的数据");
-    }
-  };
-  var reqbody = req.body;
-  var idJson = eval(reqbody.idJson);
-//   var cookieInfo = reqbody.cookieInfo.split('++');
-//   if (cookieInfo && cookieInfo !== "timeout" && cookieInfo !== "fail") {
-//     if (cookieInfo.length > 3) {
-    //   cookieInfo = cookieInfo[0].split(';')[0] + ';' + cookieInfo[1].split(';')[0] + ';' + cookieInfo[2].split(';')[0] + ';' + cookieInfo[3].split(';')[0] + ';' + cookieInfo[4].split(';')[0] + ';' + cookieInfo[5].split(';')[0] + ';';
-      var i = 0;
-      var timer = setInterval(() => {
-        if (i === idJson.length) {
-          clearInterval(timer);
-          console.info("申请结束");
-          res.send({ code: '0000', msg: "申请完成,请查看logs文件夹下的日志" });
-          res.end();
-          return false;
-        }
-        co(gen);
-        i++;
-      }, 19000);
-    // } else {
-    //   res.send({ code: '1001', msg: "账户名或密码也许不正确" });
-    //   res.end();
-    // }
-//   } else if (cookieInfo === "timeout") {
-//     res.send({ code: '1001', msg: "请求超时" });
-//     res.end();
-//   } else if (cookieInfo === "fail") {
-//     res.send({ code: '1001', msg: "请求失败，发生错误" });
-//     res.end();
-//   }
+    }, (err, state) => {
+      res.send({ code: '0000', msg: "申请完成,请查看日志" });
+      res.end();
+    });
+  })
 });
-var path = require('path');
-var rf = require("fs");
+
 router.post('/readInfo', function (req, res, next) {
+  let data;
   if (req.body.type == "suc") {
-    var data = rf.readFileSync(path.resolve(__dirname, '..') + "/logs/logs_suc.log", "utf-8");
+     data = rf.readFileSync(path.resolve(__dirname, '..') + "/logs/logs_suc.log", "utf-8");
   } else if (req.body.type == "fail") {
-    var data = rf.readFileSync(path.resolve(__dirname, '..') + "/logs/logs_warn.log", "utf-8");
+     data = rf.readFileSync(path.resolve(__dirname, '..') + "/logs/logs_warn.log", "utf-8");
   }
   res.send(data);
 });
@@ -118,6 +66,5 @@ router.post('/delnfo', function (req, res, next) {
   }
   res.send({ code: "0000", msg: "删除成功" });
 });
-
 
 module.exports = router;
