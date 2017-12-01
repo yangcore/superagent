@@ -1,6 +1,4 @@
-﻿import { json } from './C:/Users/94313/AppData/Local/Microsoft/TypeScript/2.6/node_modules/@types/body-parser';
-
-// 浏览器请求报文头部部分信息
+﻿// 浏览器请求报文头部部分信息
 const superagent = require('superagent');
 const cheerio = require('cheerio');
 const browserMsg = {
