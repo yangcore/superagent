@@ -1,4 +1,6 @@
-﻿// 浏览器请求报文头部部分信息
+﻿import { json } from './C:/Users/94313/AppData/Local/Microsoft/TypeScript/2.6/node_modules/@types/body-parser';
+
+// 浏览器请求报文头部部分信息
 const superagent = require('superagent');
 const cheerio = require('cheerio');
 const browserMsg = {
@@ -51,7 +53,7 @@ module.exports = {
             callback()
           } else {
             console.log('抓取:' + obj.id + '成功,耗时：' + spendTime);
-            console.info('抓取信息:' + obj);
+            console.info('抓取信息:' + JSON.stringify(obj));
             callback(null, obj)
           }
         }
@@ -89,6 +91,7 @@ module.exports = {
             LogFile_warn.warn("id:  " + obj.id + "   拍拍贷返回状态码" + res.body.Code + "," + res.body.Message);
           }
         }
+        console.info('拍拍贷返回的数据',"id:  " + obj.id + JSON.stringify(res.body));
         callback(null, res.body);
       })
   }
