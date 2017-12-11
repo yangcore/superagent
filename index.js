@@ -19,7 +19,8 @@ log4js.configure(log4js_config);
 // //访问登录接口获取cookie
 module.exports = {
 
-  getData(cookie, idObj, tobepaid, priceForSaleRate, xyz, levle, callback) {
+  getData(cookie, idObj, tobepaid, priceForSaleRate, xyz, levle) {
+    return new Promise(function (resolve, reject) {
     superagent.get(url.target_url)
       .set("Cookie", cookie)
       .set(browserMsg)
@@ -48,16 +49,19 @@ module.exports = {
           if (!obj.liabilities && !obj.tobepaid) {
             console.warn('抓取:' + obj.id + '失败,没有找到该标的信息,耗时：' + spendTime);
             LogFile_warn.warn('抓取: id' + obj.id + '失败,没有找到该标的信息,耗时：' + spendTime);
-            callback()
+            resolve(null);
           } else {
             console.log('抓取:' + obj.id + '成功,耗时：' + spendTime);
             console.info('抓取信息:' + JSON.stringify(obj));
-            callback(null, obj)
+            resolve(obj);
           }
         }
       });
+    })
   },
-  singleApply(obj, cookie, callback) {
+  singleApply(obj, cookie) {
+
+    return new Promise(function (resolve, reject) {
     superagent.post(url.singleApply_url)
       .set("Cookie", cookie)
       .set(browserMsg)
@@ -71,11 +75,9 @@ module.exports = {
           if (err.timeout) {
             console.warn('id:' + obj.id + '   请求超时');
             LogFile_warn.warn('id:' + obj.id + '    请求超时');
-            callback()
           } else {
             console.warn('id:' + obj.id + err + '    申请债券接口');
             LogFile_warn.warn('id:' + obj.id + err + '    申请债券接口');
-            callback()
           }
           return false;
         }
@@ -90,7 +92,8 @@ module.exports = {
           }
         }
         console.info('拍拍贷返回的数据',"id:  " + obj.id + JSON.stringify(res.body));
-        callback(null, res.body);
+        resolve(res.body)
       })
+    });
   }
 };

@@ -16,7 +16,6 @@
     "serve-favicon": "~2.4.2"
   },
   "devDependencies": {
-    "async": "^2.5.0",
     "cheerio": "^0.22.0",
     "ejsexcel": "^3.4.9",
     "eventproxy": "^1.0.0",

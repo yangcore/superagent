@@ -245,6 +245,7 @@ $('#localCookie').click(function(){
                     type: 'post',
                     url: '/',
                     async:true,
+                    timeout:0,
                     data: data.field
                     , success: function (e) {
                         layer.close(index);
@@ -278,6 +279,7 @@ $('#localCookie').click(function(){
                 data:{
                     type:type
                 },
+                timeout:0,
                 success: function (response) {
                     layer.close(index);
                     if(type=="suc"){
@@ -303,6 +305,7 @@ $('#localCookie').click(function(){
                 data:{
                     type:type
                 },
+                timeout:0,
                 success: function (response) {
                     if(type=="suc"){
                         $('#readinfo_suc').val("");
@@ -320,6 +323,7 @@ $('#localCookie').click(function(){
                 url: "/getCookie",
                 data:obj,
                 async:false,
+                timeout:0,
                 success: function (response) {
                     console.info(response);
                     if(response.code==="0000"){
