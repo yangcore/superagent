@@ -35,25 +35,26 @@ module.exports = {
             console.warn('id:' + idObj.id + err + '    获取页面数据接口');
             LogFile_warn.warn('id:' + idObj.id + err + '    获取页面数据接口');
           }
-          return false;
-        }
-        if (res.text !== undefined) {
-          let $ = cheerio.load(res.text),
-            obj = {};
-          obj.id = idObj.id;
-          obj.liabilities = $('p:contains("历史最高负债：¥")').find("span").text().replace(/¥/g, '').replace(/,/g, ''); //历史负债
-          obj.tobepaid = $('p:contains("待还金额：¥")').find("span").text().replace(/¥/g, '').replace(/,/g, ''); //代还金额
-          obj.priceForSaleRate = priceForSaleRate;
-          obj.levle = levle;
-          let spendTime = new Date().getTime() - fetchStart;
-          if (!obj.liabilities && !obj.tobepaid) {
-            console.warn('抓取:' + obj.id + '失败,没有找到该标的信息,耗时：' + spendTime);
-            LogFile_warn.warn('抓取: id' + obj.id + '失败,没有找到该标的信息,耗时：' + spendTime);
-            resolve(null);
-          } else {
-            console.log('抓取:' + obj.id + '成功,耗时：' + spendTime);
-            console.info('抓取信息:' + JSON.stringify(obj));
-            resolve(obj);
+          resolve(null);
+        }else{
+          if (res.text !== undefined) {
+            let $ = cheerio.load(res.text),
+              obj = {};
+            obj.id = idObj.id;
+            obj.liabilities = $('p:contains("历史最高负债：¥")').find("span").text().replace(/¥/g, '').replace(/,/g, ''); //历史负债
+            obj.tobepaid = $('p:contains("待还金额：¥")').find("span").text().replace(/¥/g, '').replace(/,/g, ''); //代还金额
+            obj.priceForSaleRate = priceForSaleRate;
+            obj.levle = levle;
+            let spendTime = new Date().getTime() - fetchStart;
+            if (!obj.liabilities && !obj.tobepaid) {
+              console.warn('抓取:' + obj.id + '失败,没有找到该标的信息,耗时：' + spendTime);
+              LogFile_warn.warn('抓取: id' + obj.id + '失败,没有找到该标的信息,耗时：' + spendTime);
+              resolve(null);
+            } else {
+              console.log('抓取:' + obj.id + '成功,耗时：' + spendTime);
+              console.info('抓取信息:' + JSON.stringify(obj));
+              resolve(obj);
+            }
           }
         }
       });
@@ -79,20 +80,20 @@ module.exports = {
             console.warn('id:' + obj.id + err + '    申请债券接口');
             LogFile_warn.warn('id:' + obj.id + err + '    申请债券接口');
           }
-          return false;
-        }
-
-        if (!isNaN(res.body.Code) || res.body.Code === 0) {
-          if (res.body.Code === 1) {
-            console.info('id:' + obj.id + "   拍拍贷返回状态码" + res.body.Code + "," + res.body.Message);
-            LogFile_suc.info('id:' + obj.id + "   拍拍贷返回状态码" + res.body.Code + "," + res.body.Message);
-          } else {
-            console.warn("id:  " + obj.id + "   拍拍贷返回状态码" + res.body.Code + "," + res.body.Message);
-            LogFile_warn.warn("id:  " + obj.id + "   拍拍贷返回状态码" + res.body.Code + "," + res.body.Message);
+          resolve(null)
+        }else{
+          if (!isNaN(res.body.Code) || res.body.Code === 0) {
+            if (res.body.Code === 1) {
+              console.info('id:' + obj.id + "   拍拍贷返回状态码" + res.body.Code + "," + res.body.Message);
+              LogFile_suc.info('id:' + obj.id + "   拍拍贷返回状态码" + res.body.Code + "," + res.body.Message);
+            } else {
+              console.warn("id:  " + obj.id + "   拍拍贷返回状态码" + res.body.Code + "," + res.body.Message);
+              LogFile_warn.warn("id:  " + obj.id + "   拍拍贷返回状态码" + res.body.Code + "," + res.body.Message);
+            }
           }
+          console.info('拍拍贷返回的数据',"id:  " + obj.id + JSON.stringify(res.body));
+          resolve(res.body)
         }
-        console.info('拍拍贷返回的数据',"id:  " + obj.id + JSON.stringify(res.body));
-        resolve(res.body)
       })
     });
   }

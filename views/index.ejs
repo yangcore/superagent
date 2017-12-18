@@ -9,54 +9,188 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="/public/layui/css/layui.css" media="all">
     <style>
-        body, h2, textarea { margin:0; }
-        body { font-family:-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif; font-size:14px; line-height:2; color:#666; background-color:#fff; }
-        textarea { font:inherit; outline:0 none; border:none; resize:none; }
-        textarea:focus { outline:0 none; }
+        body,
+        h2,
+        textarea {
+            margin: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
+            font-size: 14px;
+            line-height: 2;
+            color: #666;
+            background-color: #fff;
+        }
+
+        textarea {
+            font: inherit;
+            outline: 0 none;
+            border: none;
+            resize: none;
+        }
+
+        textarea:focus {
+            outline: 0 none;
+        }
+
         /* reset */
 
-        html, body { height:100%; }
-        body { display:flex; flex-direction:column; }
-        header { color:#fff; height:50px; overflow:hidden; background-color:#f10180; flex-grow:0; flex-shrink:0; margin-top: 250px;}
-        .center { flex-grow:1; flex-shrink:1; display:flex; flex-direction:row;height:100%;border:1px solid slategray}
-        .box { width:50%; box-sizing:border-box; flex-shrink:1; flex-grow:1; display:flex; flex-direction:column; }
-        .box:first-child { border-right:solid 1px #d9d9d9; }
-        .box-head { flex-shrink:0; flex-grow:0; }
-        .box-body { box-sizing:border-box; padding:10px; flex-shrink:1; flex-grow:1; }
+        html,
+        body {
+            height: 100%;
+        }
+
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            color: #fff;
+            height: 50px;
+            overflow: hidden;
+            background-color: #f10180;
+            flex-grow: 0;
+            flex-shrink: 0;
+            margin-top: 250px;
+        }
+
+        .center {
+            flex-grow: 1;
+            flex-shrink: 1;
+            display: flex;
+            flex-direction: row;
+            height: 100%;
+            border: 1px solid slategray
+        }
+
+        .box {
+            width: 50%;
+            box-sizing: border-box;
+            flex-shrink: 1;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .box:first-child {
+            border-right: solid 1px #d9d9d9;
+        }
+
+        .box-head {
+            flex-shrink: 0;
+            flex-grow: 0;
+        }
+
+        .box-body {
+            box-sizing: border-box;
+            padding: 10px;
+            flex-shrink: 1;
+            flex-grow: 1;
+        }
+
         /* layout */
 
-        .title { line-height:50px; padding-left:20px; float:left; }
-        .box-head { line-height:30px; height:30px; padding:0 10px; background-color:#f6f6f6; border-bottom:solid 1px #e7e7e7; position:relative; }
-        .clean { color:#d9d9d9; width:30px; height:30px; overflow:hidden; border-radius:100%; position:absolute; top:0; right:5px; cursor:pointer; }
-        .clean:before, .clean:after { content:""; width:2px; height:20px; background-color:currentColor; position:absolute; top:5px; left:14px; }
-        .clean:before { transform:rotate(45deg); }
-        .clean:after { transform:rotate(-45deg); }
-        .clean:hover { color:#3897FC; }
-        .setting { font-size:12px; float:right; }
-        .setting label { color:#999; cursor:pointer; margin-left:6px; }
-        .setting label:hover { color:#666; }
-        #input { overflow:auto; }
-        #input:focus { outline:0 none; }
-        #output { word-break:break-all; }
+        .title {
+            line-height: 50px;
+            padding-left: 20px;
+            float: left;
+        }
+
+        .box-head {
+            line-height: 30px;
+            height: 30px;
+            padding: 0 10px;
+            background-color: #f6f6f6;
+            border-bottom: solid 1px #e7e7e7;
+            position: relative;
+        }
+
+        .clean {
+            color: #d9d9d9;
+            width: 30px;
+            height: 30px;
+            overflow: hidden;
+            border-radius: 100%;
+            position: absolute;
+            top: 0;
+            right: 5px;
+            cursor: pointer;
+        }
+
+        .clean:before,
+        .clean:after {
+            content: "";
+            width: 2px;
+            height: 20px;
+            background-color: currentColor;
+            position: absolute;
+            top: 5px;
+            left: 14px;
+        }
+
+        .clean:before {
+            transform: rotate(45deg);
+        }
+
+        .clean:after {
+            transform: rotate(-45deg);
+        }
+
+        .clean:hover {
+            color: #3897FC;
+        }
+
+        .setting {
+            font-size: 12px;
+            float: right;
+        }
+
+        .setting label {
+            color: #999;
+            cursor: pointer;
+            margin-left: 6px;
+        }
+
+        .setting label:hover {
+            color: #666;
+        }
+
+        #input {
+            overflow: auto;
+        }
+
+        #input:focus {
+            outline: 0 none;
+        }
+
+        #output {
+            word-break: break-all;
+        }
     </style>
+    <!-- <script type="text/javascript" src="http://cdn.staticfile.org/socket.io/1.3.7/socket.io.js"></script>   -->
+    <script src="https://cdn.bootcss.com/socket.io/2.0.4/socket.io.slim.js"></script>
 </head>
 
 <body>
-<div style="display: flex;padding-bottom: 200px">
-    <div style="width: 50%;">
-        <div>
-            <form class="layui-form">
-                <div class="layui-form-item">
-                    <div class="layui-inline" style="padding: 40px;color:red">
-                        说明：<br>
-                        1 由于拍拍贷登陆接口有次数限制，可能出现验证码情况，所以改为手动登陆<a style="color:#3897FC;"  target="_blank" href="https://ac.ppdai.com/User/Login?message=&Redirect=http://invdebt.ppdai.com/negotiable/apply">拍拍贷官网</a>，手动填写cookie，防止登陆不成功；<br/>
-                        2 拍拍贷登陆是有有效期的（页面打开，但不做任何操作下，长时间会失效，具体多久会失效不清楚），若发现申请债转提示全部变为”不符合条件或登陆失效“时，请检查该标的符合筛选条件不，或该标的是此账户标的不，若都符合，可能登陆失效，可以尝试关闭浏览器，重新打开，登陆；<br>
-                        3 由于只计算了发送时间，没有计算响应时间，造成发送完成，但是无响应，页面可以继续操作，但是标的申请还在继续的假象，所以现在把 <span style="color:blue">每一个标的的申请时间从发送到响应最大间隔时间改为19秒一个(包含三个请求，每个最长6秒，共18秒，加1秒缓冲时间)，若超过无响应择视为请求超时；所以申请标的时，请耐心等待。</span><br>
-                        4 右侧可直接转换标的，建议不要一次性转换过多标的，过多若电脑性能不行，可能会造成页面卡死；<br>
-                        5 不要使用ie浏览器，可以使用谷歌或其他浏览器，因为标的id转换不支持ie内核的浏览器；
+    <div style="display: flex;padding-bottom: 200px">
+        <div style="width: 50%;">
+            <div>
+                <form class="layui-form">
+                    <div class="layui-form-item">
+                        <div class="layui-inline" style="padding: 40px;color:red">
+                            说明：
+                            <br> 1 由于拍拍贷登陆接口有次数限制，可能出现验证码情况，所以改为手动登陆
+                            <a style="color:#3897FC;" target="_blank" href="https://ac.ppdai.com/User/Login?message=&Redirect=http://invdebt.ppdai.com/negotiable/apply">拍拍贷官网</a>，手动填写cookie，防止登陆不成功；
+                            <br/> 2 拍拍贷登陆是有有效期的（页面打开，但不做任何操作下，长时间会失效，具体多久会失效不清楚），若发现申请债转提示全部变为”不符合条件或登陆失效“时，请检查该标的符合筛选条件不，或该标的是此账户标的不，若都符合，可能登陆失效，可以尝试关闭浏览器，重新打开，登陆；
+                            <br> 3 由于只计算了发送时间，没有计算响应时间，造成发送完成，但是无响应，页面可以继续操作，但是标的申请还在继续的假象，所以现在把
+                            <span style="color:blue">每一个标的的申请时间从发送到响应最大间隔时间改为19秒一个(包含三个请求，每个最长6秒，共18秒，加1秒缓冲时间)，若超过无响应择视为请求超时；所以申请标的时，请耐心等待。</span>
+                            <br> 4 右侧可直接转换标的，建议不要一次性转换过多标的，过多若电脑性能不行，可能会造成页面卡死；
+                            <br> 5 不要使用ie浏览器，可以使用谷歌或其他浏览器，因为标的id转换不支持ie内核的浏览器；
+                        </div>
                     </div>
-                </div>
-                <!-- <div class="layui-form-item">
+                    <!-- <div class="layui-form-item">
                     <div class="layui-inline">
                         <label class="layui-form-label">用户名</label>
                         <div class="layui-input-inline">
@@ -73,118 +207,126 @@
                         </div>
                     </div>
                 </div> -->
-                <div class="layui-form-item layui-form-text">
-                    <label class="layui-form-label">cookie<br/>（手动登陆信息）</label>
-                    <div class="layui-input-block">
-                        <textarea placeholder="请输入内容" name="cookie" class="layui-textarea"></textarea>
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <div class="layui-input-block">
-                        <button class="layui-btn" type="button" id="localCookie">存入本地</button>
-                    </div>
-                </div>
-
-
-                <div class="layui-form-item">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">待还金额</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="tobepaid" lay-verify="required" autocomplete="off" class="layui-input">
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">cookie
+                            <br/>（手动登陆信息）</label>
+                        <div class="layui-input-block">
+                            <textarea placeholder="请输入内容" name="cookie" class="layui-textarea"></textarea>
                         </div>
                     </div>
-                </div>
 
-                <div class="layui-form-item">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">利率</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="priceForSaleRate" lay-verify="required" autocomplete="off" class="layui-input">
-                        </div>
-                        <span class="layui-form-label">%</span>
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">保险比率</label>
-                        <div class="layui-input-inline">
-                            <input type="text" name="xyz" lay-verify="required" autocomplete="off" class="layui-input">
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" type="button" id="localCookie">存入本地</button>
                         </div>
                     </div>
-                </div>
 
 
-                <div class="layui-form-item">
-                    <label class="layui-form-label">标的等级</label>
-                    <div class="layui-input-block">
-                        <select name="levle" >
-                            <option value=""></option>
-                            <option value="A">A</option>
-                            <option value="B">B</option>
-                            <option value="C">C</option>
-                            <option value="D" selected="selected">D</option>
-                            <option value="E">E</option>
-                            <option value="F">F</option>
-                        </select>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">待还金额</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="tobepaid" lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="layui-form-item layui-form-text">
-                    <label class="layui-form-label">标的id</label>
-                    <div class="layui-input-block">
-                        <textarea placeholder="请输入内容" name="idJson" class="layui-textarea"></textarea>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">利率</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="priceForSaleRate" lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                            <span class="layui-form-label">%</span>
+                        </div>
                     </div>
-                </div>
 
-                <div class="layui-form-item">
-                    <div class="layui-input-block">
-                        <button class="layui-btn" lay-submit="" lay-filter="demo1">立即申请</button>
-                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                    <div class="layui-form-item">
+                        <div class="layui-inline">
+                            <label class="layui-form-label">保险比率</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="xyz" lay-verify="required" autocomplete="off" class="layui-input">
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </form>
-        </div>
-        <div class="layui-form-item" >
-            <button  id="readinfobtn_suc" class="layui-btn">查看成功结果</button>
-            <textarea  class="layui-textarea" id="readinfo_suc"> </textarea>
-        </div>
-        <div class="layui-form-item" >
-            <button  id="readinfobtn_fail" class="layui-btn">查看失败结果</button>
-            <textarea  class="layui-textarea" id="readinfo_fail"> </textarea>
-        </div>
-        <div class="layui-form-item" >
-            <button  id="del1" class="layui-btn">清空成功日志</button>
-            <button  id="del2" class="layui-btn">清空失败日志</button>
-        </div>
-    </div>
 
-    <div style="width: 50%;height: 1000px;">
-        <header>
-            <h2 class="title">Excel to JSON</h2>
-        </header>
-        <div class="center">
-            <div class="box">
-                <div class="box-head">输入 Excel<span id="clean" class="clean" title="清空"></span></div>
-                <div id="input" class="box-body" contenteditable="true"></div>
+
+                    <div class="layui-form-item">
+                        <label class="layui-form-label">标的等级</label>
+                        <div class="layui-input-block">
+                            <select name="levle">
+                                <option value=""></option>
+                                <option value="A">A</option>
+                                <option value="B">B</option>
+                                <option value="C">C</option>
+                                <option value="D" selected="selected">D</option>
+                                <option value="E">E</option>
+                                <option value="F">F</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item layui-form-text">
+                        <label class="layui-form-label">标的id</label>
+                        <div class="layui-input-block">
+                            <textarea placeholder="请输入内容" name="idJson" class="layui-textarea"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="layui-form-item">
+                        <div class="layui-input-block">
+                            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即申请</button>
+                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
+                        </div>
+                    </div>
+                </form>
             </div>
-            <div class="box">
-                <div class="box-head">
-                    输出 JSON
-                    <div class="setting" style="display: none">
-                        <label><input type="checkbox" id="addField" checked="checked"> 首行字段</label>
-                        <label><input type="checkbox" id="addIndex"> 首列索引</label>
-                        <label title="仅作用于单行或单列数据"><input type="checkbox" id="simplify"> 简化数据</label>
-                        <label><input type="checkbox" id="nl2br"> 保留换行</label>
-                        <label><input type="checkbox" id="compaction" checked="checked"> 代码压缩</label>
-                    </div>
-                </div>
-                <textarea id="output" class="box-body" spellcheck="false"></textarea>
+            <div class="layui-form-item">
+                <button id="readinfobtn_suc" class="layui-btn">查看成功结果</button>
+                <textarea class="layui-textarea" id="readinfo_suc"> </textarea>
+            </div>
+            <div class="layui-form-item">
+                <button id="readinfobtn_fail" class="layui-btn">查看失败结果</button>
+                <textarea class="layui-textarea" id="readinfo_fail"> </textarea>
+            </div>
+            <div class="layui-form-item">
+                <button id="del1" class="layui-btn">清空成功日志</button>
+                <button id="del2" class="layui-btn">清空失败日志</button>
             </div>
         </div>
+
+        <div style="width: 50%;height: 1000px;">
+            <header>
+                <h2 class="title">Excel to JSON</h2>
+            </header>
+            <div class="center">
+                <div class="box">
+                    <div class="box-head">输入 Excel
+                        <span id="clean" class="clean" title="清空"></span>
+                    </div>
+                    <div id="input" class="box-body" contenteditable="true"></div>
+                </div>
+                <div class="box">
+                    <div class="box-head">
+                        输出 JSON
+                        <div class="setting" style="display: none">
+                            <label>
+                                <input type="checkbox" id="addField" checked="checked"> 首行字段</label>
+                            <label>
+                                <input type="checkbox" id="addIndex"> 首列索引</label>
+                            <label title="仅作用于单行或单列数据">
+                                <input type="checkbox" id="simplify"> 简化数据</label>
+                            <label>
+                                <input type="checkbox" id="nl2br"> 保留换行</label>
+                            <label>
+                                <input type="checkbox" id="compaction" checked="checked"> 代码压缩</label>
+                        </div>
+                    </div>
+                    <textarea id="output" class="box-body" spellcheck="false"></textarea>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
     <script src="/public/layui/layui.js" charset="utf-8"></script>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script>
@@ -192,280 +334,256 @@
             var form = layui.form()
                 , layer = layui.layer;
 
-$('#localCookie').click(function(){
-    var cookieinfo=$("textarea[name='cookie']").val();
-    if(cookieinfo==''){
-        layer.msg("请填入cookie信息并点击存入本地", { icon: 5 ,time: 2000});
-                        layer.close(index);
-                        return false;
-    }else{
-        sessionStorage.setItem('cookieInfo',cookieinfo);
-        if(sessionStorage.getItem('cookieInfo')===cookieinfo){
-            layer.msg("存入完成", { icon: 1 ,time: 2000});
-        }
-    }
-})
-            
+            $('#localCookie').click(function () {
+                var cookieinfo = $("textarea[name='cookie']").val();
+                if (cookieinfo == '') {
+                    layer.msg("请填入cookie信息并点击存入本地", { icon: 5, time: 2000 });
+                    layer.close(index);
+                    return false;
+                } else {
+                    sessionStorage.setItem('cookieInfo', cookieinfo);
+                    if (sessionStorage.getItem('cookieInfo') === cookieinfo) {
+                        layer.msg("存入完成", { icon: 1, time: 2000 });
+                    }
+                }
+            })
+
+            var index2;
             //监听提交
             form.on('submit(demo1)', function (data) {
-                var index = layer.load(0,{shade:[0.1,'#fff']});
-                // var obj={
-                //     user:data.field.user,
-                //     password:data.field.password
-                // }
-                if(!sessionStorage.getItem("cookieInfo")){
-                    // var cookieInfo = getCookie(obj);
-                    // if(cookieInfo.length>3 && cookieInfo!=="timeout" && cookieInfo!=="fail"){
-                    //    var str="";
-                    //     for(var i=0;i<cookieInfo.length;i++){
-                    //         str+=cookieInfo[i]+"++";
-                    //     }
-                    //     sessionStorage.setItem('cookieInfo',str);
-                    //     data.field.cookieInfo=sessionStorage.getItem("cookieInfo");
-                    // }else if(cookieInfo==="timeout"){
-                    //     layer.msg("登陆超时多试几次", { icon: 5 ,time: 2000});
-                    //     layer.close(index);
-                    //     return false;
-                    // }else if(cookieInfo==="fail"){
-                    //     layer.msg("登陆失败，发生错误", { icon: 5 ,time: 2000});
-                    //     layer.close(index);
-                    //     return false;
-                    // }else {
-                    //     layer.msg("登陆失败，请检查密码账号，多试几次", { icon: 5 ,time: 2000});
-                    //     layer.close(index);
-                    //     return false;
-                    // }
-                        layer.msg("请填入cookie信息并点击存入本地", { icon: 5 ,time: 2000});
-                        layer.close(index);
-                        return false;
-                }else {
-                    data.field.cookieInfo=sessionStorage.getItem("cookieInfo");
+                index2 = layer.load(0, { shade: [0.1, '#fff'] });
+                if (!sessionStorage.getItem("cookieInfo")) {
+                    layer.msg("请填入cookie信息并点击存入本地", { icon: 5, time: 2000 });
+                    layer.close(index2);
+                    return false;
+                } else {
+                    data.field.cookieInfo = sessionStorage.getItem("cookieInfo");
                 }
                 $.ajax({
                     type: 'post',
                     url: '/',
-                    async:true,
-                    timeout:0,
+                    async: true,
+                    timeout: 0,
                     data: data.field
                     , success: function (e) {
-                        layer.close(index);
-                        if (e.code == "0000") {
-                            layer.msg(e.msg, { icon: 1 ,time: 2000});
-                        } else {
-                            layer.msg(e.msg, { icon: 5 ,time: 2000});
-                        }
                     }, error: function (e) {
-                        layer.close(index);
-                        layer.msg("服务出现问题", { icon: 5 ,time: 2000});
                     }
                 })
                 return false;
             });
+
+            var socket = io(window.location.href);
+                socket.on('complete', function (e) {
+                    layer.close(index2);
+                    layer.msg(e.msg, { icon: 1, time: 2000 });
+                })
         });
 
-        $('#readinfobtn_suc').click(function(){
+        $('#readinfobtn_suc').click(function () {
             getinfo('suc');
         });
 
-        $('#readinfobtn_fail').click(function(){
+        $('#readinfobtn_fail').click(function () {
             getinfo('fail');
         });
 
-       function getinfo(type){
-        var index = layer.load(0,{shade:[0.1,'#fff']});
-        $.ajax({
+        function getinfo(type) {
+            var index = layer.load(0, { shade: [0.1, '#fff'] });
+            $.ajax({
                 type: "post",
                 url: "/readInfo",
-                data:{
-                    type:type
+                data: {
+                    type: type
                 },
-                timeout:0,
+                timeout: 0,
                 success: function (response) {
                     layer.close(index);
-                    if(type=="suc"){
+                    if (type == "suc") {
                         $('#readinfo_suc').val(response);
-                    }else if(type=="fail"){
+                    } else if (type == "fail") {
                         $('#readinfo_fail').val(response);
                     }
                 }
-             });
-       }
+            });
+        }
 
-       $('#del1').click(function(){
+        $('#del1').click(function () {
             dellog('suc')
-       })
-       $('#del2').click(function(){
+        })
+        $('#del2').click(function () {
             dellog('fail')
-       })
+        })
 
-       function dellog(type){
-        $.ajax({
+        function dellog(type) {
+            $.ajax({
                 type: "post",
                 url: "/delnfo",
-                data:{
-                    type:type
+                data: {
+                    type: type
                 },
-                timeout:0,
+                timeout: 0,
                 success: function (response) {
-                    if(type=="suc"){
+                    if (type == "suc") {
                         $('#readinfo_suc').val("");
-                    }else {
+                    } else {
                         $('#readinfo_fail').val("");
                     }
-                    layer.msg(response.msg, { icon: 1 ,time: 2000});
+                    layer.msg(response.msg, { icon: 1, time: 2000 });
                 }
             });
-       }
-        function getCookie(obj){
-           var cookieInfo =[];
+        }
+        function getCookie(obj) {
+            var cookieInfo = [];
             $.ajax({
                 type: "post",
                 url: "/getCookie",
-                data:obj,
-                async:false,
-                timeout:0,
+                data: obj,
+                async: false,
+                timeout: 0,
                 success: function (response) {
                     console.info(response);
-                    if(response.code==="0000"){
-                        cookieInfo=response.result.cookieInfo;
+                    if (response.code === "0000") {
+                        cookieInfo = response.result.cookieInfo;
                     }
                 }
             });
             return cookieInfo;
         }
+
+
     </script>
-<script>
-    var input = document.querySelector('#input'),
-        output = document.querySelector('#output'),
-        addField = document.querySelector('#addField'),
-        addIndex = document.querySelector('#addIndex'),
-        simplify = document.querySelector('#simplify'),
-        nl2br = document.querySelector('#nl2br'),
-        compaction = document.querySelector('#compaction');
+    <script>
+        var input = document.querySelector('#input'),
+            output = document.querySelector('#output'),
+            addField = document.querySelector('#addField'),
+            addIndex = document.querySelector('#addIndex'),
+            simplify = document.querySelector('#simplify'),
+            nl2br = document.querySelector('#nl2br'),
+            compaction = document.querySelector('#compaction');
 
-    function getTable() {
-        var table = input.querySelector('table');
-        if (table) {
-            return table;
-        }
-        //Windows Firefox 粘贴内容不包含table
-        var tBody = input.querySelector('tbody');
-        if (tBody) {
-            return tBody;
-        }
-        return null;
-    }
-
-    function table2data(table) {
-        var tableData = [],
-            br = nl2br.checked ? '<br/>' : '';
-        if (table.rows.length) {
-            Array.from(table.rows).forEach(function (tr) {
-                var trData = [];
-                if (tr.cells.length) {
-                    Array.from(tr.cells).forEach(function (td) {
-                        var text = td.innerText.trim();
-                        trData.push(text.replace(/\n/g, br));
-                    });
-                }
-                tableData.push(trData);
-            });
-        }
-        return tableData;
-    }
-
-    function arrayCombine(keys, values) {
-        var obj = {};
-        keys.forEach(function (key, i) {
-            obj[key] = values[i];
-        });
-        return obj;
-    }
-
-    function convert() {
-        output.value = '';
-
-        var table = getTable();
-        if (!table) {
-            return;
+        function getTable() {
+            var table = input.querySelector('table');
+            if (table) {
+                return table;
+            }
+            //Windows Firefox 粘贴内容不包含table
+            var tBody = input.querySelector('tbody');
+            if (tBody) {
+                return tBody;
+            }
+            return null;
         }
 
-        var rows = table2data(table);
-        if (!rows.length) {
-            return;
-        }
-
-        var fields = [], data = [];
-
-        if (simplify.checked && (rows.length == 1 || rows[0].length == 1)) {
-            if (rows.length == 1) {
-                data = rows[0];
-            } else {
-                rows.forEach(function (cols) {
-                    data.push(cols[0]);
+        function table2data(table) {
+            var tableData = [],
+                br = nl2br.checked ? '<br/>' : '';
+            if (table.rows.length) {
+                Array.from(table.rows).forEach(function (tr) {
+                    var trData = [];
+                    if (tr.cells.length) {
+                        Array.from(tr.cells).forEach(function (td) {
+                            var text = td.innerText.trim();
+                            trData.push(text.replace(/\n/g, br));
+                        });
+                    }
+                    tableData.push(trData);
                 });
             }
-        } else if (addIndex.checked && addField.checked) {
-            data = {};
-            rows.forEach(function (cols, i) {
-                var key = cols.shift();
-                if (i == 0) {
-                    fields = cols;
+            return tableData;
+        }
+
+        function arrayCombine(keys, values) {
+            var obj = {};
+            keys.forEach(function (key, i) {
+                obj[key] = values[i];
+            });
+            return obj;
+        }
+
+        function convert() {
+            output.value = '';
+
+            var table = getTable();
+            if (!table) {
+                return;
+            }
+
+            var rows = table2data(table);
+            if (!rows.length) {
+                return;
+            }
+
+            var fields = [], data = [];
+
+            if (simplify.checked && (rows.length == 1 || rows[0].length == 1)) {
+                if (rows.length == 1) {
+                    data = rows[0];
                 } else {
-                    data[key] = arrayCombine(fields, cols);
+                    rows.forEach(function (cols) {
+                        data.push(cols[0]);
+                    });
                 }
-            });
-        } else if (addIndex.checked) {
-            data = {};
-            rows.forEach(function (cols, i) {
-                var key = cols.shift();
-                data[key] = cols;
-            });
-        } else if (addField.checked) {
-            rows.forEach(function (cols, i) {
-                if (i == 0) {
-                    fields = cols;
-                } else {
-                    data.push(arrayCombine(fields, cols));
-                }
-            });
-        } else {
-            rows.forEach(function (cols, i) {
-                data.push(cols);
-            });
+            } else if (addIndex.checked && addField.checked) {
+                data = {};
+                rows.forEach(function (cols, i) {
+                    var key = cols.shift();
+                    if (i == 0) {
+                        fields = cols;
+                    } else {
+                        data[key] = arrayCombine(fields, cols);
+                    }
+                });
+            } else if (addIndex.checked) {
+                data = {};
+                rows.forEach(function (cols, i) {
+                    var key = cols.shift();
+                    data[key] = cols;
+                });
+            } else if (addField.checked) {
+                rows.forEach(function (cols, i) {
+                    if (i == 0) {
+                        fields = cols;
+                    } else {
+                        data.push(arrayCombine(fields, cols));
+                    }
+                });
+            } else {
+                rows.forEach(function (cols, i) {
+                    data.push(cols);
+                });
+            }
+
+            if (compaction.checked) {
+                output.value = JSON.stringify(data);
+            } else {
+                output.value = JSON.stringify(data, null, '\t');
+            }
         }
 
-        if (compaction.checked) {
-            output.value = JSON.stringify(data);
-        } else {
-            output.value = JSON.stringify(data, null, '\t');
-        }
-    }
+        //输入侧事件
+        input.addEventListener('input', convert, false);
+        document.querySelector('#clean').addEventListener('click', function () {
+            input.innerHTML = '';
+            output.value = '';
+        }, false);
 
-    //输入侧事件
-    input.addEventListener('input', convert, false);
-    document.querySelector('#clean').addEventListener('click', function () {
-        input.innerHTML = '';
-        output.value = '';
-    }, false);
+        //输出侧事件
+        ['addField', 'addIndex', 'simplify', 'nl2br', 'compaction'].forEach(function (v) {
+            var element = window[v],
+                storage = localStorage[v];
 
-    //输出侧事件
-    ['addField', 'addIndex', 'simplify', 'nl2br', 'compaction'].forEach(function (v) {
-        var element = window[v],
-            storage = localStorage[v];
+            if (typeof storage === 'string') {
+                element.checked = eval(storage);
+            }
 
-        if (typeof storage === 'string') {
-            element.checked = eval(storage);
-        }
-
-        element.addEventListener('change', function () {
-            localStorage[v] = this.checked;
-            convert();
+            element.addEventListener('change', function () {
+                localStorage[v] = this.checked;
+                convert();
+            });
         });
-    });
 
-    output.value = ''; //初始
-</script>
+        output.value = ''; //初始
+    </script>
 </body>
 
 </html>
