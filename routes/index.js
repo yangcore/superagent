@@ -16,24 +16,44 @@ var bidrouter = function (io) {
     res.render('index');
   });
 
-  router.post('/', function (req, res, next) {
-    let reqbody = req.body,
-      idJson = eval(reqbody.idJson);
+  // router.post('/', function (req, res, next) {
+  //   let reqbody = req.body,
+  //     idJson = eval(reqbody.idJson);
+  //   const start = async function () {
+  //     for (var i = 0; i < idJson.length; i++) {
+  //       let resultObj = await getData(reqbody.cookieInfo, idJson[i], reqbody.tobepaid, reqbody.priceForSaleRate, reqbody.xyz, reqbody.levle);
+  //       await sleep(1000);
+  //       if (resultObj) {
+  //         await singleApply(resultObj, reqbody.cookieInfo);
+  //         await sleep(500);
+  //       }
+  //     }
+  //     io.sockets.emit('complete', { code: '0000', msg: "申请完成,请查看日志" });
+  //     res.send({ code: '0000', msg: "申请完成,请查看日志" });
+  //     res.end();
+  //   }
+  //   start();
+  // });
+
+  io.on('connection',function (socket) {
+    socket.on('start', function (reqbody) {
+      let idJson = eval(reqbody.idJson);
     const start = async function () {
       for (var i = 0; i < idJson.length; i++) {
         let resultObj = await getData(reqbody.cookieInfo, idJson[i], reqbody.tobepaid, reqbody.priceForSaleRate, reqbody.xyz, reqbody.levle);
-        await sleep(2000);
+        await sleep(1000);
         if (resultObj) {
           await singleApply(resultObj, reqbody.cookieInfo);
-          await sleep(2000);
+          await sleep(500);
         }
       }
+      console.info('申请完成,请查看日志');
+      LogFile_suc.info('申请完成,请查看日志');
       io.sockets.emit('complete', { code: '0000', msg: "申请完成,请查看日志" });
-      res.send({ code: '0000', msg: "申请完成,请查看日志" });
-      res.end();
     }
     start();
-  });
+    })
+  })
 
 
   const sleep = function (time) { //休眠

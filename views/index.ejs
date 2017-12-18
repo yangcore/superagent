@@ -274,8 +274,8 @@
                     </div>
 
                     <div class="layui-form-item">
-                        <div class="layui-input-block">
-                            <button class="layui-btn" lay-submit="" lay-filter="demo1">立即申请</button>
+                        <div class="layui-input-block" id="sq">
+                            <button class="layui-btn" lay-submit="" lay-filter="demo1" id="demo1">立即申请</button>
                             <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                         </div>
                     </div>
@@ -330,6 +330,7 @@
     <script src="/public/layui/layui.js" charset="utf-8"></script>
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script>
+        var socket = io(window.location.href);
         layui.use(['form', 'layedit', 'laydate'], function () {
             var form = layui.form()
                 , layer = layui.layer;
@@ -359,24 +360,16 @@
                 } else {
                     data.field.cookieInfo = sessionStorage.getItem("cookieInfo");
                 }
-                $.ajax({
-                    type: 'post',
-                    url: '/',
-                    async: true,
-                    timeout: 0,
-                    data: data.field
-                    , success: function (e) {
-                    }, error: function (e) {
-                    }
-                })
+                $('#sq').hide();
+                socket.emit('start', data.field);
                 return false;
             });
-
-            var socket = io(window.location.href);
-                socket.on('complete', function (e) {
-                    layer.close(index2);
-                    layer.msg(e.msg, { icon: 1, time: 2000 });
-                })
+            
+            socket.on('complete', function (e) {
+                $('#sq').show();
+                layer.close(index2);
+                layer.msg(e.msg, { icon: 1, time: 2000 });
+            })
         });
 
         $('#readinfobtn_suc').click(function () {
