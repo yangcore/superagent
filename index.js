@@ -22,9 +22,14 @@ module.exports = {
   getData(cookie, idObj, tobepaid, priceForSaleRate, xyz, levle) {
     return new Promise(function (resolve, reject) {
     superagent.get(url.target_url)
+      .timeout({
+        response: 5000,  // Wait 5 seconds for the server to start sending,
+        deadline: 60000, // but allow 1 minute for the file to finish loading.
+      })
       .set("Cookie", cookie)
       .set(browserMsg)
       .query(idObj)
+      .retry(3) 
       .end(function (err, res) {
         let fetchStart = new Date().getTime();
         if (err) {
@@ -55,6 +60,8 @@ module.exports = {
               console.info('抓取信息:' + JSON.stringify(obj));
               resolve(obj);
             }
+          }else{
+            resolve(null);
           }
         }
       });
@@ -64,6 +71,10 @@ module.exports = {
 
     return new Promise(function (resolve, reject) {
     superagent.post(url.singleApply_url)
+      .timeout({
+        response: 5000,  // Wait 5 seconds for the server to start sending,
+        deadline: 60000, // but allow 1 minute for the file to finish loading.
+      })
       .set("Cookie", cookie)
       .set(browserMsg)
       .query({ listingId: obj.id })
@@ -71,6 +82,7 @@ module.exports = {
       .query({ priceForSale: 0 })
       .query({ priceForSaleRate: obj.priceForSaleRate * 1000 / 100000 })
       .query({ creditCode: obj.levle })
+      .retry(3) 
       .end(function (err, res) {
         if (err) {
           if (err.timeout) {

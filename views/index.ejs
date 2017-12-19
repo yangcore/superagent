@@ -169,7 +169,6 @@
             word-break: break-all;
         }
     </style>
-    <!-- <script type="text/javascript" src="http://cdn.staticfile.org/socket.io/1.3.7/socket.io.js"></script>   -->
     <script src="https://cdn.bootcss.com/socket.io/2.0.4/socket.io.slim.js"></script>
 </head>
 
@@ -183,30 +182,11 @@
                             说明：
                             <br> 1 由于拍拍贷登陆接口有次数限制，可能出现验证码情况，所以改为手动登陆
                             <a style="color:#3897FC;" target="_blank" href="https://ac.ppdai.com/User/Login?message=&Redirect=http://invdebt.ppdai.com/negotiable/apply">拍拍贷官网</a>，手动填写cookie，防止登陆不成功；
-                            <br/> 2 拍拍贷登陆是有有效期的（页面打开，但不做任何操作下，长时间会失效，具体多久会失效不清楚），若发现申请债转提示全部变为”不符合条件或登陆失效“时，请检查该标的符合筛选条件不，或该标的是此账户标的不，若都符合，可能登陆失效，可以尝试关闭浏览器，重新打开，登陆；
-                            <br> 3 由于只计算了发送时间，没有计算响应时间，造成发送完成，但是无响应，页面可以继续操作，但是标的申请还在继续的假象，所以现在把
-                            <span style="color:blue">每一个标的的申请时间从发送到响应最大间隔时间改为19秒一个(包含三个请求，每个最长6秒，共18秒，加1秒缓冲时间)，若超过无响应择视为请求超时；所以申请标的时，请耐心等待。</span>
-                            <br> 4 右侧可直接转换标的，建议不要一次性转换过多标的，过多若电脑性能不行，可能会造成页面卡死；
-                            <br> 5 不要使用ie浏览器，可以使用谷歌或其他浏览器，因为标的id转换不支持ie内核的浏览器；
+                            <br/> 2 拍拍贷登陆是有有效期的（页面打开，但不做任何操作下，长时间会失效，具体多久会失效不清楚），若发现申请债转提示全部变为”抓取失败“时，请检查该标的符合筛选条件不，或该标的是此账户下标的不，若都符合，可能登陆失效，可以尝试重新获取cookie，登陆；
+                            <br> 3 右侧可直接转换标的，建议不要一次性转换过多标的，过多若电脑性能不行，可能会造成页面卡死；
+                            <br> 4 不要使用ie浏览器，可以使用谷歌或其他浏览器，因为标的id转换不支持ie内核的浏览器；
                         </div>
                     </div>
-                    <!-- <div class="layui-form-item">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">用户名</label>
-                        <div class="layui-input-inline">
-                            <input type="tel" name="user" lay-verify="required" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                </div>
-
-                <div class="layui-form-item">
-                    <div class="layui-inline">
-                        <label class="layui-form-label">密码</label>
-                        <div class="layui-input-inline">
-                            <input type="password" name="password" lay-verify="required" autocomplete="off" class="layui-input">
-                        </div>
-                    </div>
-                </div> -->
                     <div class="layui-form-item layui-form-text">
                         <label class="layui-form-label">cookie
                             <br/>（手动登陆信息）</label>
@@ -221,12 +201,11 @@
                         </div>
                     </div>
 
-
                     <div class="layui-form-item">
                         <div class="layui-inline">
                             <label class="layui-form-label">待还金额</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="tobepaid" lay-verify="required" autocomplete="off" class="layui-input">
+                                <input type="text" name="tobepaid" lay-verify="required" autocomplete="off" class="layui-input" value="100">
                             </div>
                         </div>
                     </div>
@@ -235,7 +214,7 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">利率</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="priceForSaleRate" lay-verify="required" autocomplete="off" class="layui-input">
+                                <input type="text" name="priceForSaleRate" lay-verify="required" autocomplete="off" class="layui-input" value="22">
                             </div>
                             <span class="layui-form-label">%</span>
                         </div>
@@ -245,11 +224,10 @@
                         <div class="layui-inline">
                             <label class="layui-form-label">保险比率</label>
                             <div class="layui-input-inline">
-                                <input type="text" name="xyz" lay-verify="required" autocomplete="off" class="layui-input">
+                                <input type="text" name="xyz" lay-verify="required" autocomplete="off" class="layui-input" value="0.9">
                             </div>
                         </div>
                     </div>
-
 
                     <div class="layui-form-item">
                         <label class="layui-form-label">标的等级</label>
@@ -281,14 +259,17 @@
                     </div>
                 </form>
             </div>
+
             <div class="layui-form-item">
                 <button id="readinfobtn_suc" class="layui-btn">查看成功结果</button>
                 <textarea class="layui-textarea" id="readinfo_suc"> </textarea>
             </div>
+
             <div class="layui-form-item">
                 <button id="readinfobtn_fail" class="layui-btn">查看失败结果</button>
                 <textarea class="layui-textarea" id="readinfo_fail"> </textarea>
             </div>
+
             <div class="layui-form-item">
                 <button id="del1" class="layui-btn">清空成功日志</button>
                 <button id="del2" class="layui-btn">清空失败日志</button>
@@ -357,9 +338,9 @@
                     layer.msg("请填入cookie信息并点击存入本地", { icon: 5, time: 2000 });
                     layer.close(index2);
                     return false;
-                } else {
-                    data.field.cookieInfo = sessionStorage.getItem("cookieInfo");
-                }
+                } 
+
+                data.field.cookieInfo = sessionStorage.getItem("cookieInfo");
                 $('#sq').hide();
                 socket.emit('start', data.field);
                 return false;
