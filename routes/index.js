@@ -43,8 +43,13 @@ var bidrouter = function (io) {
         let resultObj = await getData(reqbody.cookieInfo, idJson[i], reqbody.tobepaid, reqbody.priceForSaleRate, reqbody.xyz, reqbody.levle);
         await sleep(1000);
         if (resultObj) {
-          await singleApply(resultObj, reqbody.cookieInfo);
-          await sleep(500);
+          if (resultObj.tobepaid / resultObj.liabilities >= reqbody.xyz || resultObj.tobepaid >= reqbody.tobepaid) {
+            await singleApply(resultObj, reqbody.cookieInfo);
+            await sleep(500);
+          } else {
+            console.warn("id:  " + idJson[i].id + "   不符合条件");
+            LogFile_warn.warn("id:  " + idJson[i].id + "  不符合条件");
+          }
         }
       }
       console.info('申请完成,请查看日志');
