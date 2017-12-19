@@ -185,6 +185,7 @@
                             <br/> 2 拍拍贷登陆是有有效期的（页面打开，但不做任何操作下，长时间会失效，具体多久会失效不清楚），若发现申请债转提示全部变为”抓取失败“时，请检查该标的符合筛选条件不，或该标的是此账户下标的不，若都符合，可能登陆失效，可以尝试重新获取cookie，登陆；
                             <br> 3 右侧可直接转换标的，建议不要一次性转换过多标的，过多若电脑性能不行，可能会造成页面卡死；
                             <br> 4 不要使用ie浏览器，可以使用谷歌或其他浏览器，因为标的id转换不支持ie内核的浏览器；
+                            <br> 5 如果浏览器弹出显示通知浮沉，请点击允许，这样标的债转完成后会主动发送通知；
                         </div>
                     </div>
                     <div class="layui-form-item layui-form-text">
@@ -312,6 +313,9 @@
     <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
     <script>
         var socket = io(window.location.href);
+        if(window.Notification){
+            Notification.requestPermission(); 
+        }
         layui.use(['form', 'layedit', 'laydate'], function () {
             var form = layui.form()
                 , layer = layui.layer;
@@ -350,6 +354,16 @@
                 $('#sq').show();
                 layer.close(index2);
                 layer.msg(e.msg, { icon: 1, time: 2000 });
+                if (window.Notification && Notification.permission !== "denied") {
+                    Notification.requestPermission(function (status) {
+                        if (status === 'granted') {
+                            var n = new Notification('债转程序', {
+                                body: '申请完成,请查看日志',
+                                icon: 'https://cdn.paicaifu.com/wealth/img/safeguard/logo.png'
+                            });
+                        }
+                    });
+                }
             })
         });
 
