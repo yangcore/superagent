@@ -19,7 +19,7 @@ log4js.configure(log4js_config);
 // //访问登录接口获取cookie
 module.exports = {
 
-  getData(cookie, idObj, tobepaid, priceForSaleRate, xyz, levle) {
+  getData(cookie, idObj, tobepaid, priceForSaleRate, xyz, levle,io) {
     return new Promise(function (resolve, reject) {
     superagent.get(url.target_url)
       .timeout({
@@ -34,9 +34,11 @@ module.exports = {
         let fetchStart = new Date().getTime();
         if (err) {
           if (err.timeout) {
+            io.sockets.emit('sendinfo', { code: '0000',type:'warn', msg: ('id:' + idObj.id + '    请求超时') });
             console.warn('id:' + idObj.id + '    请求超时');
             LogFile_warn.warn('id:' + idObj.id + '      请求超时');
           } else {
+            io.sockets.emit('sendinfo', { code: '0000',type:'warn', msg: ('id:' + idObj.id + err + '    获取页面数据接口') });
             console.warn('id:' + idObj.id + err + '    获取页面数据接口');
             LogFile_warn.warn('id:' + idObj.id + err + '    获取页面数据接口');
           }
@@ -52,10 +54,12 @@ module.exports = {
             obj.levle = levle;
             let spendTime = new Date().getTime() - fetchStart;
             if (!obj.liabilities && !obj.tobepaid) {
+              io.sockets.emit('sendinfo', { code: '0000',type:'warn', msg: ('抓取:' + obj.id + '失败,没有找到该标的信息,耗时：' + spendTime) });
               console.warn('抓取:' + obj.id + '失败,没有找到该标的信息,耗时：' + spendTime);
               LogFile_warn.warn('抓取: id' + obj.id + '失败,没有找到该标的信息,耗时：' + spendTime);
               resolve(null);
             } else {
+              io.sockets.emit('sendinfo', { code: '0000',type:'suc', msg: ('抓取成功:   id:'+obj.id + JSON.stringify(obj)) });
               console.log('抓取:' + obj.id + '成功,耗时：' + spendTime);
               console.info('抓取信息:' + JSON.stringify(obj));
               resolve(obj);
@@ -67,7 +71,7 @@ module.exports = {
       });
     })
   },
-  singleApply(obj, cookie) {
+  singleApply(obj, cookie,io) {
 
     return new Promise(function (resolve, reject) {
     superagent.post(url.singleApply_url)
@@ -86,9 +90,11 @@ module.exports = {
       .end(function (err, res) {
         if (err) {
           if (err.timeout) {
+            io.sockets.emit('sendinfo', { code: '0000',type:'warn', msg: ('id:' + obj.id + '   请求超时') });
             console.warn('id:' + obj.id + '   请求超时');
             LogFile_warn.warn('id:' + obj.id + '    请求超时');
           } else {
+            io.sockets.emit('sendinfo', { code: '0000',type:'warn', msg: ('id:' + obj.id + err + '    申请债券接口') });
             console.warn('id:' + obj.id + err + '    申请债券接口');
             LogFile_warn.warn('id:' + obj.id + err + '    申请债券接口');
           }
@@ -96,13 +102,16 @@ module.exports = {
         }else{
           if (!isNaN(res.body.Code) || res.body.Code === 0) {
             if (res.body.Code === 1) {
+              io.sockets.emit('sendinfo', { code: '0000',type:'suc', msg: ('id:' + obj.id + "   拍拍贷返回状态码" + res.body.Code + "," + res.body.Message) });
               console.info('id:' + obj.id + "   拍拍贷返回状态码" + res.body.Code + "," + res.body.Message);
               LogFile_suc.info('id:' + obj.id + "   拍拍贷返回状态码" + res.body.Code + "," + res.body.Message);
             } else {
+              io.sockets.emit('sendinfo', { code: '0000',type:'warn', msg: ('id:' + obj.id + "   拍拍贷返回状态码" + res.body.Code + "," + res.body.Message) });
               console.warn("id:  " + obj.id + "   拍拍贷返回状态码" + res.body.Code + "," + res.body.Message);
               LogFile_warn.warn("id:  " + obj.id + "   拍拍贷返回状态码" + res.body.Code + "," + res.body.Message);
             }
           }
+          io.sockets.emit('sendinfo', { code: '0000',type:'suc', msg: ('拍拍贷返回的数据',"id:  " + obj.id + JSON.stringify(res.body)) });
           console.info('拍拍贷返回的数据',"id:  " + obj.id + JSON.stringify(res.body));
           resolve(res.body)
         }

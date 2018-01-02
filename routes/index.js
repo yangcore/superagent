@@ -11,47 +11,40 @@ var path = require('path');
 var rf = require("fs");
 
 var bidrouter = function (io) {
+
   log4js.configure(log4js_config);
   router.get('/', function (req, res, next) {
     res.render('index');
   });
 
-  // router.post('/', function (req, res, next) {
-  //   let reqbody = req.body,
-  //     idJson = eval(reqbody.idJson);
-  //   const start = async function () {
-  //     for (var i = 0; i < idJson.length; i++) {
-  //       let resultObj = await getData(reqbody.cookieInfo, idJson[i], reqbody.tobepaid, reqbody.priceForSaleRate, reqbody.xyz, reqbody.levle);
-  //       await sleep(1000);
-  //       if (resultObj) {
-  //         await singleApply(resultObj, reqbody.cookieInfo);
-  //         await sleep(500);
-  //       }
-  //     }
-  //     io.sockets.emit('complete', { code: '0000', msg: "申请完成,请查看日志" });
-  //     res.send({ code: '0000', msg: "申请完成,请查看日志" });
-  //     res.end();
-  //   }
-  //   start();
-  // });
-
   io.on('connection',function (socket) {
     socket.on('start', function (reqbody) {
       let idJson = eval(reqbody.idJson);
+      let startEndFlag = true;
+      socket.on('startEndFlagFn', function (e) {
+          startEndFlag=false;
+      })
     const start = async function () {
       for (var i = 0; i < idJson.length; i++) {
-        let resultObj = await getData(reqbody.cookieInfo, idJson[i], reqbody.tobepaid, reqbody.priceForSaleRate, reqbody.xyz, reqbody.levle);
+        if(!startEndFlag){
+          console.info('跳出循环');
+          break;
+        }
+        let resultObj = await getData(reqbody.cookieInfo, idJson[i], reqbody.tobepaid, reqbody.priceForSaleRate, reqbody.xyz, reqbody.levle,io);
         await sleep(1000);
         if (resultObj) {
           if (resultObj.tobepaid / resultObj.liabilities >= reqbody.xyz || resultObj.tobepaid >= reqbody.tobepaid) {
-            await singleApply(resultObj, reqbody.cookieInfo);
+            await singleApply(resultObj, reqbody.cookieInfo,io);
             await sleep(500);
           } else {
+            io.sockets.emit('sendinfo', { code: '0000',type:'warn', msg: ("id:  " + idJson[i].id + "   不符合条件") });
             console.warn("id:  " + idJson[i].id + "   不符合条件");
             LogFile_warn.warn("id:  " + idJson[i].id + "  不符合条件");
           }
         }
+
       }
+      io.sockets.emit('sendinfo', { code: '0000',type:'suc', msg: ('申请完成,请查看日志') });
       console.info('申请完成,请查看日志');
       LogFile_suc.info('申请完成,请查看日志');
       io.sockets.emit('complete', { code: '0000', msg: "申请完成,请查看日志" });

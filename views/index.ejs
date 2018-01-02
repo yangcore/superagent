@@ -9,6 +9,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="/public/layui/css/layui.css" media="all">
     <style>
+        .stop{
+            position: absolute;
+            z-index: 200000000000;
+            top: 260px;
+            right: 10px;
+        }
         body,
         h2,
         textarea {
@@ -53,7 +59,7 @@
             background-color: #f10180;
             flex-grow: 0;
             flex-shrink: 0;
-            margin-top: 250px;
+            /* margin-top: 250px; */
         }
 
         .center {
@@ -168,6 +174,12 @@
         #output {
             word-break: break-all;
         }
+        .error{
+            color: red;
+        }
+        .suc{
+            color: green;
+        }
     </style>
     <script src="https://cdn.bootcss.com/socket.io/2.0.4/socket.io.slim.js"></script>
 </head>
@@ -186,6 +198,7 @@
                             <br> 3 右侧可直接转换标的，建议不要一次性转换过多标的，过多若电脑性能不行，可能会造成页面卡死；
                             <br> 4 不要使用ie浏览器，可以使用谷歌或其他浏览器，因为标的id转换不支持ie内核的浏览器；
                             <br> 5 如果浏览器弹出显示通知浮沉，请点击允许，这样标的债转完成后会主动发送通知；
+                            <br>6 右侧有转换标的信息记录，可实时查看，如果标的债转发生错误，可点击停止债转按钮，就可以停止当前债转进程；
                         </div>
                     </div>
                     <div class="layui-form-item layui-form-text">
@@ -278,6 +291,9 @@
         </div>
 
         <div style="width: 50%;height: 1000px;">
+            <button id="del3" class="layui-btn stop">停止债转</button>
+            <div id="sendinfo" style="width:100%;height:300px;background:black;color:white;overflow:hidden;overflow-y:scroll">
+            </div>
             <header>
                 <h2 class="title">Excel to JSON</h2>
             </header>
@@ -334,6 +350,11 @@
                 }
             })
 
+
+            $('#del3').click(function(){
+                socket.emit('startEndFlagFn');
+            })
+
             var index2;
             //监听提交
             form.on('submit(demo1)', function (data) {
@@ -366,6 +387,34 @@
                 }
             })
         });
+
+        var sendinfotime=0;
+        socket.on('sendinfo', function (e) {
+            var str='';
+            if(e.type=="warn"){
+                str= "<p class='error'>"+e.msg+"</p>"
+            }else{
+                str= "<p class='suc'>"+e.msg+"</p>"
+            }
+            if( $('#sendinfo').children().length==1000){
+                sendinfotime=sendinfotime-500;
+                $('#sendinfo p:lt(501)').remove();
+            }
+            $('#sendinfo').append(str);
+            if( $('#sendinfo').children().length>=10){
+                sendinfotime++;
+                var r = $('#sendinfo').find("p:first");
+                var n = r.height();
+                r.animate({
+                    marginTop: -n*sendinfotime + "px"
+                }, 600)
+            }
+        })
+
+        $('#sendinfo').mouseover(function(){
+            $('#sendinfo p:first').css({'margin-top':''});
+        })
+
 
         $('#readinfobtn_suc').click(function () {
             getinfo('suc');
