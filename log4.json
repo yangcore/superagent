@@ -1,33 +1,49 @@
-  {
-    "appenders":  
-    {  
-        "out": {  
-            "type":"console"
-        },  
-        "log_file_warn" :{  
-            "type": "file",  
-            "filename": "./logs/logs_warn.log",  
-             
-            "backups": 100  
-        },
-        "log_file_suc" :{  
-            "type": "file",  
-            "filename": "./logs/logs_suc.log",  
-              
-            "backups": 100  
-        },
-        "log_file_err" :{  
-            "type": "file",  
-            "filename": "./logs/logs_err.log",  
-            
-            "backups": 100  
-        }
-    },  
-    "categories": {
-        "default": { "appenders": [ "out" ], "level": "info" },
-        "log_file_warn": { "appenders": [ "log_file_warn" ], "level": "warn" },
-        "log_file_suc": { "appenders": [ "log_file_suc" ], "level": "info" },
-        "log_file_err": { "appenders": [ "log_file_err" ], "level": "error" }
-      },
-"replaceConsole": true
+{
+  "appenders": {
+    "out": {
+      "type": "console"
+    },
+    "log_file_warn": {
+      "type": "file",
+      "filename": "./logs/logs_warn.log",
+      "backups": 100
+    },
+    "log_file_suc": {
+      "type": "file",
+      "filename": "./logs/logs_suc.log",
+      "backups": 100
+    },
+    "log_file_err": {
+      "type": "file",
+      "filename": "./logs/logs_err.log",
+      "backups": 100
+    }
+  },
+  "categories": {
+    "default": {
+      "appenders": [
+        "out"
+      ],
+      "level": "info"
+    },
+    "log_file_warn": {
+      "appenders": [
+        "log_file_warn"
+      ],
+      "level": "warn"
+    },
+    "log_file_suc": {
+      "appenders": [
+        "log_file_suc"
+      ],
+      "level": "info"
+    },
+    "log_file_err": {
+      "appenders": [
+        "log_file_err"
+      ],
+      "level": "error"
+    }
+  },
+  "replaceConsole": true
 }  

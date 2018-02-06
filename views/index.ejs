@@ -9,12 +9,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="/public/layui/css/layui.css" media="all">
     <style>
-        .stop{
+        .stop {
             position: absolute;
             z-index: 200000000000;
             top: 260px;
             right: 10px;
         }
+
         body,
         h2,
         textarea {
@@ -174,10 +175,12 @@
         #output {
             word-break: break-all;
         }
-        .error{
+
+        .error {
             color: red;
         }
-        .suc{
+
+        .suc {
             color: green;
         }
     </style>
@@ -185,442 +188,449 @@
 </head>
 
 <body>
-    <div style="display: flex;padding-bottom: 200px">
-        <div style="width: 50%;">
-            <div>
-                <form class="layui-form">
-                    <div class="layui-form-item">
-                        <div class="layui-inline" style="padding: 40px;color:red">
-                            说明：
-                            <br> 1 由于拍拍贷登陆接口有次数限制，可能出现验证码情况，所以改为手动登陆
-                            <a style="color:#3897FC;" target="_blank" href="https://ac.ppdai.com/User/Login?message=&Redirect=http://invdebt.ppdai.com/negotiable/apply">拍拍贷官网</a>，手动填写cookie，防止登陆不成功；
-                            <br/> 2 拍拍贷登陆是有有效期的（页面打开，但不做任何操作下，长时间会失效，具体多久会失效不清楚），若发现申请债转提示全部变为”抓取失败“时，请检查该标的符合筛选条件不，或该标的是此账户下标的不，若都符合，可能登陆失效，可以尝试重新获取cookie，登陆；
-                            <br> 3 右侧可直接转换标的，建议不要一次性转换过多标的，过多若电脑性能不行，可能会造成页面卡死；
-                            <br> 4 不要使用ie浏览器，可以使用谷歌或其他浏览器，因为标的id转换不支持ie内核的浏览器；
-                            <br> 5 如果浏览器弹出显示通知浮沉，请点击允许，这样标的债转完成后会主动发送通知；
-                            <br>6 右侧有转换标的信息记录，可实时查看，如果标的债转发生错误，可点击停止债转按钮，就可以停止当前债转进程；
+<div style="display: flex;padding-bottom: 200px">
+    <div style="width: 50%;">
+        <div>
+            <form class="layui-form">
+                <div class="layui-form-item">
+                    <div class="layui-inline" style="padding: 40px;color:red">
+                        说明：
+                        <br> 1 由于拍拍贷登陆接口有次数限制，可能出现验证码情况，所以改为手动登陆
+                        <a style="color:#3897FC;" target="_blank"
+                           href="https://ac.ppdai.com/User/Login?message=&Redirect=http://invdebt.ppdai.com/negotiable/apply">拍拍贷官网</a>，手动填写cookie，防止登陆不成功；
+                        <br/> 2
+                        拍拍贷登陆是有有效期的（页面打开，但不做任何操作下，长时间会失效，具体多久会失效不清楚），若发现申请债转提示全部变为”抓取失败“时，请检查该标的符合筛选条件不，或该标的是此账户下标的不，若都符合，可能登陆失效，可以尝试重新获取cookie，登陆；
+                        <br> 3 右侧可直接转换标的，建议不要一次性转换过多标的，过多若电脑性能不行，可能会造成页面卡死；
+                        <br> 4 不要使用ie浏览器，可以使用谷歌或其他浏览器，因为标的id转换不支持ie内核的浏览器；
+                        <br> 5 如果浏览器弹出显示通知浮沉，请点击允许，这样标的债转完成后会主动发送通知；
+                        <br>6 右侧有转换标的信息记录，可实时查看，如果标的债转发生错误，可点击停止债转按钮，就可以停止当前债转进程；
+                    </div>
+                </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">cookie
+                        <br/>（手动登陆信息）</label>
+                    <div class="layui-input-block">
+                        <textarea placeholder="请输入内容" name="cookie" class="layui-textarea"></textarea>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button class="layui-btn" type="button" id="localCookie">存入本地</button>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">待还金额</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="tobepaid" lay-verify="required" autocomplete="off"
+                                   class="layui-input" value="100">
                         </div>
                     </div>
-                    <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">cookie
-                            <br/>（手动登陆信息）</label>
-                        <div class="layui-input-block">
-                            <textarea placeholder="请输入内容" name="cookie" class="layui-textarea"></textarea>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">利率</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="priceForSaleRate" lay-verify="required" autocomplete="off"
+                                   class="layui-input" value="22">
+                        </div>
+                        <span class="layui-form-label">%</span>
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">保险比率</label>
+                        <div class="layui-input-inline">
+                            <input type="text" name="xyz" lay-verify="required" autocomplete="off" class="layui-input"
+                                   value="0.9">
                         </div>
                     </div>
+                </div>
 
-                    <div class="layui-form-item">
-                        <div class="layui-input-block">
-                            <button class="layui-btn" type="button" id="localCookie">存入本地</button>
-                        </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label">标的等级</label>
+                    <div class="layui-input-block">
+                        <select name="levle">
+                            <option value=""></option>
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="D" selected="selected">D</option>
+                            <option value="E">E</option>
+                            <option value="F">F</option>
+                        </select>
                     </div>
+                </div>
 
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">待还金额</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="tobepaid" lay-verify="required" autocomplete="off" class="layui-input" value="100">
-                            </div>
-                        </div>
+                <div class="layui-form-item layui-form-text">
+                    <label class="layui-form-label">标的id</label>
+                    <div class="layui-input-block">
+                        <textarea placeholder="请输入内容" name="idJson" class="layui-textarea"></textarea>
                     </div>
+                </div>
 
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">利率</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="priceForSaleRate" lay-verify="required" autocomplete="off" class="layui-input" value="22">
-                            </div>
-                            <span class="layui-form-label">%</span>
-                        </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block" id="sq">
+                        <button class="layui-btn" lay-submit="" lay-filter="demo1" id="demo1">立即申请</button>
+                        <button type="reset" class="layui-btn layui-btn-primary">重置</button>
                     </div>
-
-                    <div class="layui-form-item">
-                        <div class="layui-inline">
-                            <label class="layui-form-label">保险比率</label>
-                            <div class="layui-input-inline">
-                                <input type="text" name="xyz" lay-verify="required" autocomplete="off" class="layui-input" value="0.9">
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">标的等级</label>
-                        <div class="layui-input-block">
-                            <select name="levle">
-                                <option value=""></option>
-                                <option value="A">A</option>
-                                <option value="B">B</option>
-                                <option value="C">C</option>
-                                <option value="D" selected="selected">D</option>
-                                <option value="E">E</option>
-                                <option value="F">F</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item layui-form-text">
-                        <label class="layui-form-label">标的id</label>
-                        <div class="layui-input-block">
-                            <textarea placeholder="请输入内容" name="idJson" class="layui-textarea"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="layui-form-item">
-                        <div class="layui-input-block" id="sq">
-                            <button class="layui-btn" lay-submit="" lay-filter="demo1" id="demo1">立即申请</button>
-                            <button type="reset" class="layui-btn layui-btn-primary">重置</button>
-                        </div>
-                    </div>
-                </form>
-            </div>
-
-            <div class="layui-form-item">
-                <button id="readinfobtn_suc" class="layui-btn">查看成功结果</button>
-                <textarea class="layui-textarea" id="readinfo_suc"> </textarea>
-            </div>
-
-            <div class="layui-form-item">
-                <button id="readinfobtn_fail" class="layui-btn">查看失败结果</button>
-                <textarea class="layui-textarea" id="readinfo_fail"> </textarea>
-            </div>
-
-            <div class="layui-form-item">
-                <button id="del1" class="layui-btn">清空成功日志</button>
-                <button id="del2" class="layui-btn">清空失败日志</button>
-            </div>
+                </div>
+            </form>
         </div>
 
-        <div style="width: 50%;height: 1000px;">
-            <button id="del3" class="layui-btn stop">停止债转</button>
-            <div id="sendinfo" style="width:100%;height:300px;background:black;color:white;overflow:hidden;overflow-y:scroll">
+        <div class="layui-form-item">
+            <button id="readinfobtn_suc" class="layui-btn">查看成功结果</button>
+            <textarea class="layui-textarea" id="readinfo_suc"> </textarea>
+        </div>
+
+        <div class="layui-form-item">
+            <button id="readinfobtn_fail" class="layui-btn">查看失败结果</button>
+            <textarea class="layui-textarea" id="readinfo_fail"> </textarea>
+        </div>
+
+        <div class="layui-form-item">
+            <button id="del1" class="layui-btn">清空成功日志</button>
+            <button id="del2" class="layui-btn">清空失败日志</button>
+        </div>
+    </div>
+
+    <div style="width: 50%;height: 1000px;">
+        <button id="del3" class="layui-btn stop">停止债转</button>
+        <div id="sendinfo"
+             style="width:100%;height:300px;background:black;color:white;overflow:hidden;overflow-y:scroll">
+        </div>
+        <header>
+            <h2 class="title">Excel to JSON</h2>
+        </header>
+        <div class="center">
+            <div class="box">
+                <div class="box-head">输入 Excel
+                    <span id="clean" class="clean" title="清空"></span>
+                </div>
+                <div id="input" class="box-body" contenteditable="true"></div>
             </div>
-            <header>
-                <h2 class="title">Excel to JSON</h2>
-            </header>
-            <div class="center">
-                <div class="box">
-                    <div class="box-head">输入 Excel
-                        <span id="clean" class="clean" title="清空"></span>
+            <div class="box">
+                <div class="box-head">
+                    输出 JSON
+                    <div class="setting" style="display: none">
+                        <label>
+                            <input type="checkbox" id="addField" checked="checked"> 首行字段</label>
+                        <label>
+                            <input type="checkbox" id="addIndex"> 首列索引</label>
+                        <label title="仅作用于单行或单列数据">
+                            <input type="checkbox" id="simplify"> 简化数据</label>
+                        <label>
+                            <input type="checkbox" id="nl2br"> 保留换行</label>
+                        <label>
+                            <input type="checkbox" id="compaction" checked="checked"> 代码压缩</label>
                     </div>
-                    <div id="input" class="box-body" contenteditable="true"></div>
                 </div>
-                <div class="box">
-                    <div class="box-head">
-                        输出 JSON
-                        <div class="setting" style="display: none">
-                            <label>
-                                <input type="checkbox" id="addField" checked="checked"> 首行字段</label>
-                            <label>
-                                <input type="checkbox" id="addIndex"> 首列索引</label>
-                            <label title="仅作用于单行或单列数据">
-                                <input type="checkbox" id="simplify"> 简化数据</label>
-                            <label>
-                                <input type="checkbox" id="nl2br"> 保留换行</label>
-                            <label>
-                                <input type="checkbox" id="compaction" checked="checked"> 代码压缩</label>
-                        </div>
-                    </div>
-                    <textarea id="output" class="box-body" spellcheck="false"></textarea>
-                </div>
+                <textarea id="output" class="box-body" spellcheck="false"></textarea>
             </div>
         </div>
     </div>
-    <script src="/public/layui/layui.js" charset="utf-8"></script>
-    <script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
-    <script>
-        var socket = io(window.location.href);
-        if(window.Notification){
-            Notification.requestPermission(); 
-        }
-        layui.use(['form', 'layedit', 'laydate'], function () {
-            var form = layui.form()
-                , layer = layui.layer;
+</div>
+<script src="/public/layui/layui.js" charset="utf-8"></script>
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+    var socket = io(window.location.href);
+    if (window.Notification) {
+        Notification.requestPermission();
+    }
+    layui.use(['form', 'layedit', 'laydate'], function () {
+        var form = layui.form()
+            , layer = layui.layer;
 
-            $('#localCookie').click(function () {
-                var cookieinfo = $("textarea[name='cookie']").val();
-                if (cookieinfo == '') {
-                    layer.msg("请填入cookie信息并点击存入本地", { icon: 5, time: 2000 });
-                    layer.close(index);
-                    return false;
-                } else {
-                    sessionStorage.setItem('cookieInfo', cookieinfo);
-                    if (sessionStorage.getItem('cookieInfo') === cookieinfo) {
-                        layer.msg("存入完成", { icon: 1, time: 2000 });
-                    }
-                }
-            })
-
-
-            $('#del3').click(function(){
-                socket.emit('startEndFlagFn');
-            })
-
-            var index2;
-            //监听提交
-            form.on('submit(demo1)', function (data) {
-                index2 = layer.load(0, { shade: [0.1, '#fff'] });
-                if (!sessionStorage.getItem("cookieInfo")) {
-                    layer.msg("请填入cookie信息并点击存入本地", { icon: 5, time: 2000 });
-                    layer.close(index2);
-                    return false;
-                } 
-
-                data.field.cookieInfo = sessionStorage.getItem("cookieInfo");
-                $('#sq').hide();
-                socket.emit('start', data.field);
+        $('#localCookie').click(function () {
+            var cookieinfo = $("textarea[name='cookie']").val();
+            if (cookieinfo == '') {
+                layer.msg("请填入cookie信息并点击存入本地", {icon: 5, time: 2000});
+                layer.close(index);
                 return false;
-            });
-            
-            socket.on('complete', function (e) {
-                $('#sq').show();
+            } else {
+                sessionStorage.setItem('cookieInfo', cookieinfo);
+                if (sessionStorage.getItem('cookieInfo') === cookieinfo) {
+                    layer.msg("存入完成", {icon: 1, time: 2000});
+                }
+            }
+        })
+
+
+        $('#del3').click(function () {
+            socket.emit('startEndFlagFn');
+        })
+
+        var index2;
+        //监听提交
+        form.on('submit(demo1)', function (data) {
+            index2 = layer.load(0, {shade: [0.1, '#fff']});
+            if (!sessionStorage.getItem("cookieInfo")) {
+                layer.msg("请填入cookie信息并点击存入本地", {icon: 5, time: 2000});
                 layer.close(index2);
-                layer.msg(e.msg, { icon: 1, time: 2000 });
-                if (window.Notification && Notification.permission !== "denied") {
-                    Notification.requestPermission(function (status) {
-                        if (status === 'granted') {
-                            var n = new Notification('债转程序', {
-                                body: '申请完成,请查看日志',
-                                icon: 'https://cdn.paicaifu.com/wealth/img/safeguard/logo.png'
-                            });
-                        }
-                    });
-                }
-            })
+                return false;
+            }
+
+            data.field.cookieInfo = sessionStorage.getItem("cookieInfo");
+            $('#sq').hide();
+            socket.emit('start', data.field);
+            return false;
         });
 
-        var sendinfotime=0;
-        socket.on('sendinfo', function (e) {
-            var str='';
-            if(e.type=="warn"){
-                str= "<p class='error'>"+e.msg+"</p>"
-            }else{
-                str= "<p class='suc'>"+e.msg+"</p>"
-            }
-            if( $('#sendinfo').children().length==1000){
-                sendinfotime=sendinfotime-500;
-                $('#sendinfo p:lt(501)').remove();
-            }
-            $('#sendinfo').append(str);
-            if( $('#sendinfo').children().length>=10){
-                sendinfotime++;
-                var r = $('#sendinfo').find("p:first");
-                var n = r.height();
-                r.animate({
-                    marginTop: -n*sendinfotime + "px"
-                }, 600)
-            }
-        })
-
-        $('#sendinfo').mouseover(function(){
-            $('#sendinfo p:first').css({'margin-top':''});
-        })
-
-
-        $('#readinfobtn_suc').click(function () {
-            getinfo('suc');
-        });
-
-        $('#readinfobtn_fail').click(function () {
-            getinfo('fail');
-        });
-
-        function getinfo(type) {
-            var index = layer.load(0, { shade: [0.1, '#fff'] });
-            $.ajax({
-                type: "post",
-                url: "/readInfo",
-                data: {
-                    type: type
-                },
-                timeout: 0,
-                success: function (response) {
-                    layer.close(index);
-                    if (type == "suc") {
-                        $('#readinfo_suc').val(response);
-                    } else if (type == "fail") {
-                        $('#readinfo_fail').val(response);
-                    }
-                }
-            });
-        }
-
-        $('#del1').click(function () {
-            dellog('suc')
-        })
-        $('#del2').click(function () {
-            dellog('fail')
-        })
-
-        function dellog(type) {
-            $.ajax({
-                type: "post",
-                url: "/delnfo",
-                data: {
-                    type: type
-                },
-                timeout: 0,
-                success: function (response) {
-                    if (type == "suc") {
-                        $('#readinfo_suc').val("");
-                    } else {
-                        $('#readinfo_fail').val("");
-                    }
-                    layer.msg(response.msg, { icon: 1, time: 2000 });
-                }
-            });
-        }
-        function getCookie(obj) {
-            var cookieInfo = [];
-            $.ajax({
-                type: "post",
-                url: "/getCookie",
-                data: obj,
-                async: false,
-                timeout: 0,
-                success: function (response) {
-                    console.info(response);
-                    if (response.code === "0000") {
-                        cookieInfo = response.result.cookieInfo;
-                    }
-                }
-            });
-            return cookieInfo;
-        }
-
-
-    </script>
-    <script>
-        var input = document.querySelector('#input'),
-            output = document.querySelector('#output'),
-            addField = document.querySelector('#addField'),
-            addIndex = document.querySelector('#addIndex'),
-            simplify = document.querySelector('#simplify'),
-            nl2br = document.querySelector('#nl2br'),
-            compaction = document.querySelector('#compaction');
-
-        function getTable() {
-            var table = input.querySelector('table');
-            if (table) {
-                return table;
-            }
-            //Windows Firefox 粘贴内容不包含table
-            var tBody = input.querySelector('tbody');
-            if (tBody) {
-                return tBody;
-            }
-            return null;
-        }
-
-        function table2data(table) {
-            var tableData = [],
-                br = nl2br.checked ? '<br/>' : '';
-            if (table.rows.length) {
-                Array.from(table.rows).forEach(function (tr) {
-                    var trData = [];
-                    if (tr.cells.length) {
-                        Array.from(tr.cells).forEach(function (td) {
-                            var text = td.innerText.trim();
-                            trData.push(text.replace(/\n/g, br));
+        socket.on('complete', function (e) {
+            $('#sq').show();
+            layer.close(index2);
+            layer.msg(e.msg, {icon: 1, time: 2000});
+            if (window.Notification && Notification.permission !== "denied") {
+                Notification.requestPermission(function (status) {
+                    if (status === 'granted') {
+                        var n = new Notification('债转程序', {
+                            body: '申请完成,请查看日志',
+                            icon: 'https://cdn.paicaifu.com/wealth/img/safeguard/logo.png'
                         });
                     }
-                    tableData.push(trData);
                 });
             }
-            return tableData;
+        })
+    });
+
+    var sendinfotime = 0;
+    socket.on('sendinfo', function (e) {
+        var str = '';
+        if (e.type == "warn") {
+            str = "<p class='error'>" + e.msg + "</p>"
+        } else {
+            str = "<p class='suc'>" + e.msg + "</p>"
         }
-
-        function arrayCombine(keys, values) {
-            var obj = {};
-            keys.forEach(function (key, i) {
-                obj[key] = values[i];
-            });
-            return obj;
+        if ($('#sendinfo').children().length == 1000) {
+            sendinfotime = sendinfotime - 500;
+            $('#sendinfo p:lt(501)').remove();
         }
+        $('#sendinfo').append(str);
+        if ($('#sendinfo').children().length >= 10) {
+            sendinfotime++;
+            var r = $('#sendinfo').find("p:first");
+            var n = r.height();
+            r.animate({
+                marginTop: -n * sendinfotime + "px"
+            }, 600)
+        }
+    })
 
-        function convert() {
-            output.value = '';
+    $('#sendinfo').mouseover(function () {
+        $('#sendinfo p:first').css({'margin-top': ''});
+    })
 
-            var table = getTable();
-            if (!table) {
-                return;
+
+    $('#readinfobtn_suc').click(function () {
+        getinfo('suc');
+    });
+
+    $('#readinfobtn_fail').click(function () {
+        getinfo('fail');
+    });
+
+    function getinfo(type) {
+        var index = layer.load(0, {shade: [0.1, '#fff']});
+        $.ajax({
+            type: "post",
+            url: "/readInfo",
+            data: {
+                type: type
+            },
+            timeout: 0,
+            success: function (response) {
+                layer.close(index);
+                if (type == "suc") {
+                    $('#readinfo_suc').val(response);
+                } else if (type == "fail") {
+                    $('#readinfo_fail').val(response);
+                }
             }
+        });
+    }
 
-            var rows = table2data(table);
-            if (!rows.length) {
-                return;
-            }
+    $('#del1').click(function () {
+        dellog('suc')
+    })
+    $('#del2').click(function () {
+        dellog('fail')
+    })
 
-            var fields = [], data = [];
-
-            if (simplify.checked && (rows.length == 1 || rows[0].length == 1)) {
-                if (rows.length == 1) {
-                    data = rows[0];
+    function dellog(type) {
+        $.ajax({
+            type: "post",
+            url: "/delnfo",
+            data: {
+                type: type
+            },
+            timeout: 0,
+            success: function (response) {
+                if (type == "suc") {
+                    $('#readinfo_suc').val("");
                 } else {
-                    rows.forEach(function (cols) {
-                        data.push(cols[0]);
+                    $('#readinfo_fail').val("");
+                }
+                layer.msg(response.msg, {icon: 1, time: 2000});
+            }
+        });
+    }
+
+    function getCookie(obj) {
+        var cookieInfo = [];
+        $.ajax({
+            type: "post",
+            url: "/getCookie",
+            data: obj,
+            async: false,
+            timeout: 0,
+            success: function (response) {
+                console.info(response);
+                if (response.code === "0000") {
+                    cookieInfo = response.result.cookieInfo;
+                }
+            }
+        });
+        return cookieInfo;
+    }
+
+
+</script>
+<script>
+    var input = document.querySelector('#input'),
+        output = document.querySelector('#output'),
+        addField = document.querySelector('#addField'),
+        addIndex = document.querySelector('#addIndex'),
+        simplify = document.querySelector('#simplify'),
+        nl2br = document.querySelector('#nl2br'),
+        compaction = document.querySelector('#compaction');
+
+    function getTable() {
+        var table = input.querySelector('table');
+        if (table) {
+            return table;
+        }
+        //Windows Firefox 粘贴内容不包含table
+        var tBody = input.querySelector('tbody');
+        if (tBody) {
+            return tBody;
+        }
+        return null;
+    }
+
+    function table2data(table) {
+        var tableData = [],
+            br = nl2br.checked ? '<br/>' : '';
+        if (table.rows.length) {
+            Array.from(table.rows).forEach(function (tr) {
+                var trData = [];
+                if (tr.cells.length) {
+                    Array.from(tr.cells).forEach(function (td) {
+                        var text = td.innerText.trim();
+                        trData.push(text.replace(/\n/g, br));
                     });
                 }
-            } else if (addIndex.checked && addField.checked) {
-                data = {};
-                rows.forEach(function (cols, i) {
-                    var key = cols.shift();
-                    if (i == 0) {
-                        fields = cols;
-                    } else {
-                        data[key] = arrayCombine(fields, cols);
-                    }
-                });
-            } else if (addIndex.checked) {
-                data = {};
-                rows.forEach(function (cols, i) {
-                    var key = cols.shift();
-                    data[key] = cols;
-                });
-            } else if (addField.checked) {
-                rows.forEach(function (cols, i) {
-                    if (i == 0) {
-                        fields = cols;
-                    } else {
-                        data.push(arrayCombine(fields, cols));
-                    }
-                });
-            } else {
-                rows.forEach(function (cols, i) {
-                    data.push(cols);
-                });
-            }
+                tableData.push(trData);
+            });
+        }
+        return tableData;
+    }
 
-            if (compaction.checked) {
-                output.value = JSON.stringify(data);
-            } else {
-                output.value = JSON.stringify(data, null, '\t');
-            }
+    function arrayCombine(keys, values) {
+        var obj = {};
+        keys.forEach(function (key, i) {
+            obj[key] = values[i];
+        });
+        return obj;
+    }
+
+    function convert() {
+        output.value = '';
+
+        var table = getTable();
+        if (!table) {
+            return;
         }
 
-        //输入侧事件
-        input.addEventListener('input', convert, false);
-        document.querySelector('#clean').addEventListener('click', function () {
-            input.innerHTML = '';
-            output.value = '';
-        }, false);
+        var rows = table2data(table);
+        if (!rows.length) {
+            return;
+        }
 
-        //输出侧事件
-        ['addField', 'addIndex', 'simplify', 'nl2br', 'compaction'].forEach(function (v) {
-            var element = window[v],
-                storage = localStorage[v];
+        var fields = [], data = [];
 
-            if (typeof storage === 'string') {
-                element.checked = eval(storage);
+        if (simplify.checked && (rows.length == 1 || rows[0].length == 1)) {
+            if (rows.length == 1) {
+                data = rows[0];
+            } else {
+                rows.forEach(function (cols) {
+                    data.push(cols[0]);
+                });
             }
-
-            element.addEventListener('change', function () {
-                localStorage[v] = this.checked;
-                convert();
+        } else if (addIndex.checked && addField.checked) {
+            data = {};
+            rows.forEach(function (cols, i) {
+                var key = cols.shift();
+                if (i == 0) {
+                    fields = cols;
+                } else {
+                    data[key] = arrayCombine(fields, cols);
+                }
             });
-        });
+        } else if (addIndex.checked) {
+            data = {};
+            rows.forEach(function (cols, i) {
+                var key = cols.shift();
+                data[key] = cols;
+            });
+        } else if (addField.checked) {
+            rows.forEach(function (cols, i) {
+                if (i == 0) {
+                    fields = cols;
+                } else {
+                    data.push(arrayCombine(fields, cols));
+                }
+            });
+        } else {
+            rows.forEach(function (cols, i) {
+                data.push(cols);
+            });
+        }
 
-        output.value = ''; //初始
-    </script>
+        if (compaction.checked) {
+            output.value = JSON.stringify(data);
+        } else {
+            output.value = JSON.stringify(data, null, '\t');
+        }
+    }
+
+    //输入侧事件
+    input.addEventListener('input', convert, false);
+    document.querySelector('#clean').addEventListener('click', function () {
+        input.innerHTML = '';
+        output.value = '';
+    }, false);
+
+    //输出侧事件
+    ['addField', 'addIndex', 'simplify', 'nl2br', 'compaction'].forEach(function (v) {
+        var element = window[v],
+            storage = localStorage[v];
+
+        if (typeof storage === 'string') {
+            element.checked = eval(storage);
+        }
+
+        element.addEventListener('change', function () {
+            localStorage[v] = this.checked;
+            convert();
+        });
+    });
+
+    output.value = ''; //初始
+</script>
 </body>
 
 </html>
