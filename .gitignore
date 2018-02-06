@@ -2,3 +2,4 @@ node_modules
 npm-debug.log
 logs/logs_suc.log
 logs/logs_warn.log
+.idea
